@@ -18,12 +18,14 @@ class CreateAvatarsTable extends Migration
 
             $table->uuid('uuid');
 
-            $table->foreignId('players_id')->constrained('players');
+            $table->foreignId('players_id')->nullable()->constrained('players');
 
             $table->string('surname', 25)
                 ->nullable();
 
             $table->string('cost_type',4);
+
+            $table->string('color', 128)->comment('Ex: Black, Blue, Yellow, White or Red');
 
             $table->foreignId('box_id')->nullable()->constrained('box_of_players');
 

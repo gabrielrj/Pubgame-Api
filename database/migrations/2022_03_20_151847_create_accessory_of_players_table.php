@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBoxOfPlayersTable extends Migration
+class CreateAccessoryOfPlayersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,22 +13,24 @@ class CreateBoxOfPlayersTable extends Migration
      */
     public function up()
     {
-        Schema::create('box_of_players', function (Blueprint $table) {
+        Schema::create('accessory_of_players', function (Blueprint $table) {
             $table->id();
-
-            $table->uuid('uuid');
-
-            $table->foreignId('box_accessory_types_id')->constrained('box_accessory_types');
-
-            $table->foreignId('players_id')->constrained('players');
-
-            $table->boolean('is_open')
-                ->default(false)
-                ->nullable(false);
 
             $table->foreignId('accessories_id')
                 ->nullable()
                 ->constrained('accessories');
+
+            $table->uuid('uuid');
+
+            $table->foreignId('box_id')->nullable()->constrained('box_of_players');
+
+            $table->foreignId('players_id')->constrained('players');
+
+            $table->foreignId('avatars_id')
+                ->nullable()
+                ->constrained('avatars');
+
+            $table->dateTime('engagement_date_in_avatar')->nullable();
 
             $table->softDeletes();
 
@@ -43,6 +45,6 @@ class CreateBoxOfPlayersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('box_of_players');
+        Schema::dropIfExists('accessory_of_players');
     }
 }

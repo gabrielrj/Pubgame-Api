@@ -18,7 +18,8 @@ class Avatar extends Model
         'surname',
         'cost_type',
         'box_id',
+        'color',
     ];
 
-    protected $hidden = ['id', 'box_id'];
+    protected $hidden = ['id', 'box_id', 'players_id'];
 }
