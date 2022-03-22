@@ -2,7 +2,7 @@
 
 namespace App\EnumTypes\Accessory;
 
-class AccessorySkillType
+class SkillType
 {
     const Attack = 'attack';
     const Defense = 'defense';

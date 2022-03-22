@@ -16,11 +16,9 @@ class CreateBoxAccessoryTypesTable extends Migration
         Schema::create('box_accessory_types', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('rarity_id')->constrained('box_accessory_rarity_types');
-
             $table->string('name', 128)->index();
 
-            $table->string('description', 256)->index();
+            $table->string('description', 256)->nullable();
 
             $table->boolean('contains_avatar')
                 ->default(false)
@@ -33,6 +31,9 @@ class CreateBoxAccessoryTypesTable extends Migration
             $table->decimal('price')
                 ->default(0)
                 ->nullable(false);
+
+            $table->json('probability_accessory_rarity')
+                ->nullable();
 
             $table->foreignId('price_coin_id')->constrained('coin_types');
 

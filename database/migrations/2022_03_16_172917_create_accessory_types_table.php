@@ -20,7 +20,9 @@ class CreateAccessoryTypesTable extends Migration
 
             $table->string('description', 256)->nullable();
 
-            $table->string('skill', 25)->index();
+            $table->boolean('is_free')
+                ->default(false)
+                ->nullable(false);
 
             $table->softDeletes();
 

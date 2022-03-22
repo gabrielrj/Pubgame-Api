@@ -12,9 +12,7 @@ use App\Services\Repositories\AccessoryTypeRepository;
 use App\Services\Repositories\AccessoryTypeRepositoryInterface;
 use App\Services\Repositories\AvatarRepository;
 use App\Services\Repositories\AvatarRepositoryInterface;
-use App\Services\Repositories\BaseRepository;
-use App\Services\Repositories\BoxAccessoryRarityTypeRepository;
-use App\Services\Repositories\BoxAccessoryRarityTypeRepositoryInterface;
+//use App\Services\Repositories\BaseRepository;
 use App\Services\Repositories\BoxAccessoryTypeRepository;
 use App\Services\Repositories\BoxAccessoryTypeRepositoryInterface;
 use App\Services\Repositories\BoxOfPlayerRepository;
@@ -62,7 +60,6 @@ class RepositoryServiceBindProvider extends ServiceProvider
         $this->app->bind(AccessoryRarityTypeRepositoryInterface::class, AccessoryRarityTypeRepository::class);
         $this->app->bind(AccessoryRepositoryInterface::class, AccessoryRepository::class);
         $this->app->bind(AccessoryTypeRepositoryInterface::class, AccessoryTypeRepository::class);
-        $this->app->bind(BoxAccessoryRarityTypeRepositoryInterface::class, BoxAccessoryRarityTypeRepository::class);
         $this->app->bind(BoxAccessoryTypeRepositoryInterface::class, BoxAccessoryTypeRepository::class);
         $this->app->bind(CoinTypeRepositoryInterface::class, CoinTypeRepository::class);
         $this->app->bind(GameTypeRepositoryInterface::class, GameTypeRepository::class);

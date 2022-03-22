@@ -39,6 +39,10 @@ class CreateAccessoriesTable extends Migration
                 ->default(false)
                 ->nullable(false);
 
+            $table->boolean('is_free')
+                ->default(false)
+                ->nullable(false);
+
             $table->softDeletes();
 
             $table->timestamps();
