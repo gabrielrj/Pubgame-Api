@@ -12,7 +12,7 @@ class Skill extends Model
 
     protected $table = 'skills';
 
-    protected $fillable = ['name', 'description', 'skill_type'];
+    protected $fillable = ['name', 'description'];
 
     protected $hidden = ['id'];
 }

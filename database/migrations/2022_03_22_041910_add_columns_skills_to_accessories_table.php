@@ -14,7 +14,7 @@ class AddColumnsSkillsToAccessoriesTable extends Migration
     public function up()
     {
         Schema::table('accessories', function (Blueprint $table) {
-            $table->foreignId('skills_id')->constrained('skills');
+            $table->foreignId('skills_id')->nullable()->constrained('skills');
             $table->string('modifier', 25)->nullable();
         });
     }

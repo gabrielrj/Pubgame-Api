@@ -8,8 +8,6 @@ use Exception;
 
 class AuthenticationStrategy implements AuthenticationServiceInterface
 {
-    use ServiceCallableIntercept;
-
     protected AuthenticationServiceInterface $sender;
 
     public function __construct(AuthenticationServiceInterface $authenticationService)
@@ -22,8 +20,6 @@ class AuthenticationStrategy implements AuthenticationServiceInterface
      */
     public function login(array $payload) : ?string
     {
-        return $this->run(function () use($payload){
-            return $this->sender->login($payload);
-        }, __FUNCTION__);
+        return $this->sender->login($payload);
     }
 }

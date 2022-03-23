@@ -35,9 +35,13 @@ class Player extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'id',
         'password',
         'remember_token',
-        'is_blocked'
+        'is_blocked',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     /**
@@ -48,6 +52,12 @@ class Player extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'is_blocked' => 'bool'
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
     public function errors(): \Illuminate\Database\Eloquent\Relations\MorphMany

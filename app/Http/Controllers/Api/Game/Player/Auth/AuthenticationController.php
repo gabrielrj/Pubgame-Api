@@ -40,12 +40,6 @@ class AuthenticationController extends Controller
         return $this->run(function () use($request){
             $payload = $request->only('email', 'password');
 
-            if(!Arr::exists($payload, 'email') || !isset($payload['email']))
-                throw new InvalidArgumentException('E-mail is required.');
-
-            if(!Arr::exists($payload, 'password') || !isset($payload['password']))
-                throw new InvalidArgumentException('Password is required.');
-
             $authService = new AuthenticationStrategy(new PlayerAuthenticationWithEmailAndPasswordStrategy());
 
             $accessToken = $authService->login($payload);

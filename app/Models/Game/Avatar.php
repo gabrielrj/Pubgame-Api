@@ -2,10 +2,13 @@
 
 namespace App\Models\Game;
 
+use App\Models\Game\Settings\AccessoryRarityType;
 use App\Models\Traits\HasUuidKey;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class Avatar extends Model
 {
@@ -22,4 +25,28 @@ class Avatar extends Model
     ];
 
     protected $hidden = ['id', 'box_id', 'players_id'];
+
+    //Relationships//
+    public function accessories(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(AccessoryOfPlayer::class, 'avatars_id');
+    }
+
+    //Attributes//
+
+    /**
+     * @throws Exception
+     */
+    public function getLevelAttribute(): string
+    {
+        $accessoriesRarityCount = DB::table('accessory_rarity_types')
+            ->join('accessories', 'accessories.rarity_id', '=', 'accessory_rarity_types.id')
+            ->join('accessory_of_players', 'accessory_of_players.accessories_id', '=', 'accessories.id')
+            ->whereRaw(DB::raw("accessory_of_players.avatars_id = $this->id"))
+            ->selectRaw(DB::raw("distinct accessory_rarity_types.name rarity, count(accessory_of_players.accessories_id) count_of_accessories"))
+            ->get();
+
+        return 'Common';
+    }
+
 }

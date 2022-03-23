@@ -16,7 +16,7 @@ class CreateBoxOfPlayersTable extends Migration
         Schema::create('box_of_players', function (Blueprint $table) {
             $table->id();
 
-            $table->uuid('uuid');
+            $table->uuid('uuid')->unique();
 
             $table->foreignId('box_accessory_types_id')->constrained('box_accessory_types');
 

@@ -16,7 +16,7 @@ class CreateAvatarsTable extends Migration
         Schema::create('avatars', function (Blueprint $table) {
             $table->id();
 
-            $table->uuid('uuid');
+            $table->uuid('uuid')->unique();
 
             $table->foreignId('players_id')->nullable()->constrained('players');
 

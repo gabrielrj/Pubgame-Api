@@ -20,7 +20,7 @@ class CreateAccessoryOfPlayersTable extends Migration
                 ->nullable()
                 ->constrained('accessories');
 
-            $table->uuid('uuid');
+            $table->uuid('uuid')->unique();
 
             $table->foreignId('box_id')->nullable()->constrained('box_of_players');
 

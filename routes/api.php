@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Controllers\Api\Game\Player\Auth\AuthenticationController as PlayerAuthenticationController;
+use App\Http\Controllers\Api\Game\Player\Auth\RegisterController as PlayerRegisterController;
 
 Route::get('/isconnected', function () {
     return response()->json(['success' => true, 'isconnected' => true]);
@@ -29,7 +30,11 @@ Route::prefix('game')->group(function () {
 
         Route::prefix('players')->group(function () {
 
-            Route::post('login', [PlayerAuthenticationController::class, 'loginWithEmailAndPassword']);
+            Route::post('sign-in', [PlayerAuthenticationController::class, 'loginWithEmailAndPassword']);
+
+            Route::post('sign-up', [PlayerRegisterController::class, 'signUp']);
+
+            Route::post('sign-up-and-sign-in', [PlayerRegisterController::class, 'signUpAndSignIn']);
 
         });
 
