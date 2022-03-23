@@ -20,7 +20,7 @@ class CreateAvatarsTable extends Migration
 
             $table->foreignId('players_id')->nullable()->constrained('players');
 
-            $table->string('surname', 25)
+            $table->string('surname', 50)
                 ->nullable();
 
             $table->string('cost_type',4);

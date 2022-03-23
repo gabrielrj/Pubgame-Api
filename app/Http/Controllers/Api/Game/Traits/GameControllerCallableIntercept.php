@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Game\Traits;
 
 use App\Exceptions\Api\Player\AuthAndAccess\UnauthorizedPlayerAccessException;
+use App\Http\Controllers\Api\ApiResponseException;
 use App\Models\Game\Player;
 
 trait GameControllerCallableIntercept
@@ -22,17 +23,7 @@ trait GameControllerCallableIntercept
                 'jsonData' => $response
             ]);
         }catch (\Exception $exception){
-            $errors = [
-                'success' => false,
-                'error' =>
-                    [
-                        'action_name' => $this->actionName,
-                        //'exception_type' => gettype($exception),
-                        'exception_message' => $exception->getMessage(),
-                        //'exception_trace' => $exception->getTraceAsString(),
-                        'exception_code' => $exception->getCode()
-                    ]
-            ];
+            $errors = (new ApiResponseException())($exception, $this->actionName);
 
             return response()->json($errors)->withHeaders($errors);
         }

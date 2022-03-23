@@ -23,11 +23,11 @@ class CreatePlayersTable extends Migration
                 ->nullable()
                 ->index('idx_wallet_address_players');
 
-            $table->string('name')->nullable();
-
-            $table->string('email')
-                ->unique()
+            $table->string('nickname', 256)
                 ->nullable();
+
+            $table->string('email', 256)
+                ->unique();
 
             $table->timestamp('email_verified_at')
                 ->nullable();

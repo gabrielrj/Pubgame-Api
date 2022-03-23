@@ -30,8 +30,7 @@ class ErrorTrappingService implements ErrorTrappingServiceInterface
                 'stack' => $stack
             ]);
 
-            if($user)
-                $user->errors()->save($newError);
+            $user?->errors()->save($newError);
 
             return true;
         }catch (\Exception $exception){

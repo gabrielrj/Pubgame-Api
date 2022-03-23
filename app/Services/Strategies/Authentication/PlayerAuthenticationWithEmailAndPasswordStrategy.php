@@ -15,7 +15,7 @@ class PlayerAuthenticationWithEmailAndPasswordStrategy implements Authentication
 {
     use ServiceCallableIntercept;
 
-    protected $playerRepository;
+    protected PlayerRepositoryInterface $playerRepository;
 
     /**
      */
@@ -36,7 +36,7 @@ class PlayerAuthenticationWithEmailAndPasswordStrategy implements Authentication
 
             throw_if(!$player, new UnauthorizedPlayerLoginException('Login not authorized because no player with that registered email was found.'));
 
-            throw_if(Hash::check($payload['password'], $player->password), new UnauthorizedPlayerLoginException('The provided credentials are incorrect.'));
+            throw_unless(Hash::check($payload['password'], $player->password), new UnauthorizedPlayerLoginException('The provided credentials are incorrect.'));
 
             throw_if($player->is_blocked, new UnauthorizedPlayerLoginException('Player is blocked!'));
 

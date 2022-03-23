@@ -33,17 +33,11 @@ class PlayerRegistrationWithEmailAndPasswordStrategy implements \App\Services\Us
     function register(array $payload): Player
     {
         return $this->run(function () use ($payload) {
-            if(!Arr::exists($payload, 'email') || !isset($payload['email']))
-                throw new InvalidArgumentException('E-mail is required.');
-
-            if(!Arr::exists($payload, 'password') || !isset($payload['password']))
-                throw new InvalidArgumentException('Password is required.');
-
             $player = $this->playerRepository->newQuery()->where('email', '=', $payload['email'])->first();
 
             throw_if($player, PlayerEmailAlreadyRegisteredException::class);
 
-            return $this->playerRepository->create(['email' => $payload['email'], 'password' => Hash::make($payload['password'])]);
+            return $this->playerRepository->create(['nickname' => $payload['nickname'], 'email' => $payload['email'], 'password' => Hash::make($payload['password'])]);
         }, __FUNCTION__);
     }
 

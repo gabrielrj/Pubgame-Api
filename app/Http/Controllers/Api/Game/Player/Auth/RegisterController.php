@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Game\Player\Auth;
 use App\Exceptions\Api\Player\AuthAndAccess\UnauthorizedPlayerLoginException;
 use App\Http\Controllers\Api\Apps\Traits\AppControllerCallableIntercept;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Game\RegisterUserRequest;
+use App\Http\Requests\Api\Game\RegisterPlayerRequest;
 use App\Services\Repositories\PlayerRepositoryInterface;
 use App\Services\Strategies\Authentication\PlayerRegistrationWithEmailAndPasswordStrategy;
 use App\Services\Strategies\Authentication\UserRegistrationStrategy;
@@ -24,27 +24,27 @@ class RegisterController extends Controller
         $this->playerRepository = $playerRepository;
     }
 
-    public function signUp(RegisterUserRequest $request): \Illuminate\Http\JsonResponse
+    public function signUp(RegisterPlayerRequest $request): \Illuminate\Http\JsonResponse
     {
         $this->actionName = 'only sign up';
 
         return $this->run(function () use($request){
-            $payload = $request->all();
+            $payload = $request->validated();
 
             $userRegisterService = new UserRegistrationStrategy(new PlayerRegistrationWithEmailAndPasswordStrategy());
 
             return [
-                'userHasBeenRegistered' => $userRegisterService->register($payload)
+                'userHasBeenRegistered' => $userRegisterService->register($payload) !== null
             ];
         });
     }
 
-    public function signUpAndSignIn(RegisterUserRequest $request): \Illuminate\Http\JsonResponse
+    public function signUpAndSignIn(RegisterPlayerRequest $request): \Illuminate\Http\JsonResponse
     {
         $this->actionName = 'sign up and perform login';
 
         return $this->run(function () use($request){
-            $payload = $request->only('email', 'password');
+            $payload = $request->validated();
 
             $userRegisterService = new UserRegistrationStrategy(new PlayerRegistrationWithEmailAndPasswordStrategy());
 

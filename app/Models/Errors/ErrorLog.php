@@ -24,7 +24,7 @@ class ErrorLog extends Model
         'usenable_type',
     ];
 
-    public function usenable()
+    public function usenable(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {
         return $this->morphTo();
     }
