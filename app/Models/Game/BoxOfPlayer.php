@@ -18,9 +18,13 @@ class BoxOfPlayer extends Model
         'players_id',
         'is_open',
         'accessory_id',
+        'is_pending_payment'
     ];
 
     protected $hidden = ['id', 'box_accessory_types_id', 'players_id', 'accessory_id'];
 
-    protected $casts = ['is_open'];
+    protected $casts = [
+        'is_open' => 'bool',
+        'is_pending_payment' => 'bool'
+    ];
 }

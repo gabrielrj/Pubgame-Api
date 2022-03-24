@@ -26,6 +26,10 @@ class CreateBoxOfPlayersTable extends Migration
                 ->default(false)
                 ->nullable(false);
 
+            $table->boolean('is_pending_payment')
+                ->default(true)
+                ->nullable(false);
+
             $table->foreignId('accessories_id')
                 ->nullable()
                 ->constrained('accessories');

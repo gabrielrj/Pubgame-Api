@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\BoxSalesService;
+use App\Services\BoxSalesServiceInterface;
 use App\Services\Repositories\AccessoryOfPlayerRepository;
 use App\Services\Repositories\AccessoryOfPlayerRepositoryInterface;
 use App\Services\Repositories\AccessoryRarityTypeRepository;
@@ -73,5 +75,6 @@ class RepositoryServiceBindProvider extends ServiceProvider
         $this->app->bind(AvatarRepositoryInterface::class, AvatarRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(TransactionRepositoryInterface::class, TransactionRepository::class);
+        $this->app->bind(BoxSalesServiceInterface::class, BoxSalesService::class);
     }
 }
