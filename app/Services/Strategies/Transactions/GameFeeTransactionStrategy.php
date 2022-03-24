@@ -32,11 +32,15 @@ class GameFeeTransactionStrategy implements \App\Services\RegisterTransactionSer
     }
 
     /**
+     * @param Player $player
+     * @param array $payload | [float $coin_amount, string|CoinTypes $coin_type]
+     * @param Model|null $item
+     * @return Transaction
      * @throws Exception
      */
-    function createNewTransaction(Player $player, array $payload, Game|Model $item = null): Transaction
+    function createNewTransaction(Player $player, array $payload, Model $item = null): Transaction
     {
-        return $this->run(function () use($player, $payload, $item) {
+        return $this->run(function () use($player, $payload) {
             throw_if(!Arr::exists($payload, 'coin_type'), new \InvalidArgumentException('It is mandatory to select which currency will be used in the transaction.'));
 
             throw_if(!Arr::exists($payload, 'coin_amount'), new \InvalidArgumentException('It is mandatory to inform the amount of coins that will be involved in this transaction.'));
@@ -49,7 +53,7 @@ class GameFeeTransactionStrategy implements \App\Services\RegisterTransactionSer
 
             $coinType = $this->coinTypeRepository->newQuery()->whereAcronym($payload['coin_type'])->first();
 
-            return DB::transaction(function () use($player, $currentFundsOfPlayer, $coinAmount, $coinType, $item) {
+            return DB::transaction(function () use($player, $currentFundsOfPlayer, $coinAmount, $coinType) {
 
                 if(!$player->performsDebit($coinAmount, $coinType->acronym))
                     throw new PlayerCoinDebitException();
@@ -61,7 +65,7 @@ class GameFeeTransactionStrategy implements \App\Services\RegisterTransactionSer
                     'coin_amount' => $coinAmount,
                     'type' => TransactionType::GameFeePayment,
                     'status' => TransactionStatus::Completed,
-                ], $item);
+                ]);
             });
 
         }, __FUNCTION__);

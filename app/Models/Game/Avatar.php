@@ -39,12 +39,12 @@ class Avatar extends Model
      */
     public function getLevelAttribute(): string
     {
-        $accessoriesRarityCount = DB::table('accessory_rarity_types')
+        /*$accessoriesRarityCount = DB::table('accessory_rarity_types')
             ->join('accessories', 'accessories.rarity_id', '=', 'accessory_rarity_types.id')
             ->join('accessory_of_players', 'accessory_of_players.accessories_id', '=', 'accessories.id')
             ->whereRaw(DB::raw("accessory_of_players.avatars_id = $this->id"))
             ->selectRaw(DB::raw("distinct accessory_rarity_types.name rarity, count(accessory_of_players.accessories_id) count_of_accessories"))
-            ->get();
+            ->get();*/
 
         return 'Common';
     }

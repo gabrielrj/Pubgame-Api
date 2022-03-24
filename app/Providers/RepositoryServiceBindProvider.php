@@ -21,12 +21,16 @@ use App\Services\Repositories\CoinTypeRepository;
 use App\Services\Repositories\CoinTypeRepositoryInterface;
 use App\Services\Repositories\ErrorLogRepository;
 use App\Services\Repositories\ErrorLogRepositoryInterface;
+use App\Services\Repositories\GameRepository;
+use App\Services\Repositories\GameRepositoryInterface;
 use App\Services\Repositories\GameTypeRepository;
 use App\Services\Repositories\GameTypeRepositoryInterface;
 use App\Services\Repositories\PlayerRepository;
 use App\Services\Repositories\PlayerRepositoryInterface;
 use App\Services\Repositories\PubTableRepository;
 use App\Services\Repositories\PubTableRepositoryInterface;
+use App\Services\Repositories\TransactionRepository;
+use App\Services\Repositories\TransactionRepositoryInterface;
 use App\Services\Repositories\UserRepository;
 use App\Services\Repositories\UserRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -67,5 +71,7 @@ class RepositoryServiceBindProvider extends ServiceProvider
         $this->app->bind(AccessoryOfPlayerRepositoryInterface::class, AccessoryOfPlayerRepository::class);
         $this->app->bind(BoxOfPlayerRepositoryInterface::class, BoxOfPlayerRepository::class);
         $this->app->bind(AvatarRepositoryInterface::class, AvatarRepository::class);
+        $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
+        $this->app->bind(TransactionRepositoryInterface::class, TransactionRepository::class);
     }
 }

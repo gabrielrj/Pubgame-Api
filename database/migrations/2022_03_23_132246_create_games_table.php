@@ -26,6 +26,10 @@ class CreateGamesTable extends Migration
 
             $table->foreignId('pub_tables_id')->constrained('pub_tables');
 
+            $table->unsignedSmallInteger('number_of_avatar_accessories')
+                ->default(0)
+                ->nullable(false);
+
             $table->decimal('pub_coin_fee_to_play')
                 ->default(0)
                 ->nullable(false);
