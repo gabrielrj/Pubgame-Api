@@ -20,10 +20,6 @@ class CreateAccessoryTypesTable extends Migration
 
             $table->string('description', 256)->nullable();
 
-            $table->boolean('is_free')
-                ->default(false)
-                ->nullable(false);
-
             $table->softDeletes();
 
             $table->timestamps();

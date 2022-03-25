@@ -2,8 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\EnumTypes\Box\BoxCostType;
+use App\EnumTypes\Coin\CoinTypes;
 use App\Models\Game\Settings\AccessoryRarityType;
 use App\Models\Game\Settings\AccessoryType;
+use App\Models\Game\Settings\BoxAccessoryType;
+use App\Models\Game\Settings\CoinType;
 use App\Models\Game\Settings\GameType;
 use App\Models\Game\Settings\PubTable;
 use Illuminate\Database\Seeder;
@@ -17,9 +21,38 @@ class TestSeeder extends Seeder
      */
     public function run()
     {
+        $this->addCoinTypes();
+
         $this->addPubTables();
 
         $this->addGameTypes();
+
+        $this->addAccessoriesRarities();
+
+        $this->addAccessoriesType();
+
+        $this->addBoxTypes();
+    }
+
+    private function addCoinTypes(){
+        try {
+            $coinTypes = [
+                ['name' => 'PubBeer Coin', 'acronym' => 'PBC', 'is_depositable' => true],
+                ['name' => 'Binance Coin', 'acronym' => 'BNB', 'is_depositable' => true],
+                ['name' => 'Binance USD (Dólar)', 'acronym' => 'BUSD', 'is_depositable' => true],
+            ];
+
+            foreach ($coinTypes as $type){
+
+                CoinType::query()
+                    ->firstOrCreate([
+                        'name' => $type['name']
+                    ], $type);
+            }
+        }catch (\Exception $exception){
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
+        }
     }
 
     private function addPubTables(){
@@ -80,7 +113,8 @@ class TestSeeder extends Seeder
                     ]);
             }
         }catch (\Exception $exception){
-            print_r($exception->getMessage());
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
         }
     }
 
@@ -102,7 +136,8 @@ class TestSeeder extends Seeder
                     ]);
             }
         }catch (\Exception $exception){
-            print_r($exception->getMessage());
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
         }
     }
 
@@ -127,17 +162,20 @@ class TestSeeder extends Seeder
                     ]);
             }
         }catch (\Exception $exception){
-            print_r($exception->getMessage());
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
         }
     }
 
     private function addAccessoriesType(){
         try {
             $types = [
-                ['name' => 'Common', 'skill' => null, 'description' => null],
-                ['name' => 'Rare', 'skill' => null, 'description' => null],
-                ['name' => 'Epic', 'skill' => null, 'description' => null],
-                ['name' => 'Legendary', 'skill' => null, 'description' => null],
+                ['name' => 'Hair', 'description' => null],
+                ['name' => 'Eye', 'description' => null],
+                ['name' => 'Face', 'description' => null],
+                ['name' => 'Shirt', 'description' => null],
+                ['name' => 'Pants', 'description' => null],
+                ['name' => 'Shoe', 'description' => null],
             ];
 
             foreach ($types as $type){
@@ -152,7 +190,138 @@ class TestSeeder extends Seeder
                     ]);
             }
         }catch (\Exception $exception){
-            print_r($exception->getMessage());
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
+        }
+    }
+
+    private function addBoxTypes(){
+        try {
+            $commonRarityId = AccessoryRarityType::query()->where('name', '=', 'Common')
+                ->first()
+                ->id;
+
+            $rareRarityId = AccessoryRarityType::query()->where('name', '=', 'Rare')
+                ->first()
+                ->id;
+
+            $epicRarityId = AccessoryRarityType::query()->where('name', '=', 'Epic')
+                ->first()
+                ->id;
+
+            $legendaryRarityId = AccessoryRarityType::query()->where('name', '=', 'Legendary')
+                ->first()
+                ->id;
+
+            $boxTypes = [
+                ['name' => 'Kit Avatar Box 1', 'cost_type' => BoxCostType::Paid,
+                    'contains_avatar' => true,
+                    'price' => 200,
+                    'price_coin_id' => CoinType::query()->where('acronym', CoinTypes::BinanceUSD)->first()->id,
+                    'is_unlimited' => false,
+                    'available_for_sale' => true,
+                    'quantity_for_sale' => 1000,
+                    'probability_accessory_rarity' => [
+                        ['rarity' => $commonRarityId, 'chances' => 95],
+                        ['rarity' => $rareRarityId, 'chances' => 5],
+                        ['rarity' => $epicRarityId, 'chances' => 0],
+                        ['rarity' => $legendaryRarityId, 'chances' => 0],
+                    ],
+                ],
+
+                ['name' => 'Kit Avatar Box 2', 'cost_type' => BoxCostType::Paid,
+                    'contains_avatar' => true,
+                    'price' => 200,
+                    'price_coin_id' => CoinType::query()->where('acronym', CoinTypes::BinanceUSD)->first()->id,
+                    'is_unlimited' => false,
+                    'available_for_sale' => true,
+                    'quantity_for_sale' => 500,
+                    'probability_accessory_rarity' => [
+                        ['rarity' => $commonRarityId, 'chances' => 30],
+                        ['rarity' => $rareRarityId, 'chances' => 70],
+                        ['rarity' => $epicRarityId, 'chances' => 0],
+                        ['rarity' => $legendaryRarityId, 'chances' => 0],
+                    ],
+                ],
+
+                ['name' => 'Kit Avatar Box 3', 'cost_type' => BoxCostType::Paid,
+                    'contains_avatar' => true,
+                    'price' => 200,
+                    'price_coin_id' => CoinType::query()->where('acronym', CoinTypes::BinanceUSD)->first()->id,
+                    'is_unlimited' => true,
+                    'available_for_sale' => true,
+                    'quantity_for_sale' => 300,
+                    'probability_accessory_rarity' => [
+                        ['rarity' => $commonRarityId, 'chances' => 0],
+                        ['rarity' => $rareRarityId, 'chances' => 50],
+                        ['rarity' => $epicRarityId, 'chances' => 50],
+                        ['rarity' => $legendaryRarityId, 'chances' => 0],
+                    ],
+                ],
+
+                ['name' => 'Kit Free Avatar Box', 'cost_type' => BoxCostType::Free,
+                    'contains_avatar' => true,
+                    'is_unlimited' => true,
+                    'available_for_sale' => true,
+                    'quantity_for_sale' => null
+                ],
+
+                ['name' => 'Accessories Box 1', 'cost_type' => BoxCostType::Paid,
+                    'contains_avatar' => false,
+                    'price' => 200,
+                    'price_coin_id' => CoinType::query()->where('acronym', CoinTypes::BinanceUSD)->first()->id,
+                    'is_unlimited' => false,
+                    'available_for_sale' => true,
+                    'quantity_for_sale' => 1000,
+                    'probability_accessory_rarity' => [
+                        ['rarity' => $commonRarityId, 'chances' => 95],
+                        ['rarity' => $rareRarityId, 'chances' => 5],
+                        ['rarity' => $epicRarityId, 'chances' => 0],
+                        ['rarity' => $legendaryRarityId, 'chances' => 0],
+                    ],
+                ],
+
+                ['name' => 'Accessories Box 2', 'cost_type' => BoxCostType::Paid,
+                    'contains_avatar' => false,
+                    'price' => 200,
+                    'price_coin_id' => CoinType::query()->where('acronym', CoinTypes::BinanceUSD)->first()->id,
+                    'is_unlimited' => false,
+                    'available_for_sale' => true,
+                    'quantity_for_sale' => 500,
+                    'probability_accessory_rarity' => [
+                        ['rarity' => $commonRarityId, 'chances' => 30],
+                        ['rarity' => $rareRarityId, 'chances' => 70],
+                        ['rarity' => $epicRarityId, 'chances' => 0],
+                        ['rarity' => $legendaryRarityId, 'chances' => 0],
+                    ],
+                ],
+
+                ['name' => 'Accessories Box 3', 'cost_type' => BoxCostType::Paid,
+                    'contains_avatar' => false,
+                    'price' => 200,
+                    'price_coin_id' => CoinType::query()->where('acronym', CoinTypes::BinanceUSD)->first()->id,
+                    'is_unlimited' => true,
+                    'available_for_sale' => true,
+                    'quantity_for_sale' => 300,
+                    'probability_accessory_rarity' => [
+                        ['rarity' => $commonRarityId, 'chances' => 0],
+                        ['rarity' => $rareRarityId, 'chances' => 50],
+                        ['rarity' => $epicRarityId, 'chances' => 50],
+                        ['rarity' => $legendaryRarityId, 'chances' => 0],
+                    ],
+                ],
+            ];
+
+            foreach ($boxTypes as $type){
+
+                BoxAccessoryType::query()
+                    ->firstOrCreate([
+                        'name' => $type['name']
+                    ], $type);
+            }
+        }catch (\Exception $exception){
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
         }
     }
 }

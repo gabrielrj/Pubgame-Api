@@ -12,11 +12,27 @@ class BoxAccessoryType extends Model
 
     protected $table = 'box_accessory_types';
 
-    protected $fillable = ['name', 'description', 'cost_type', 'contains_avatar', 'price', 'price_coin_id', 'probability_accessory_rarity'];
+    protected $fillable = [
+        'name',
+        'description',
+        'cost_type',
+        'contains_avatar',
+        'price',
+        'price_coin_id',
+        'probability_accessory_rarity',
+        'available_for_sale',
+        'is_unlimited',
+        'quantity_for_sale',
+    ];
 
     protected $hidden = ['contains_avatar', 'price_coin_id', 'probability_accessory_rarity'];
 
-    protected $casts = ['contains_avatar' => 'bool'];
+    protected $casts = [
+        'probability_accessory_rarity' => 'array',
+        'contains_avatar' => 'bool',
+        'available_for_sale' => 'bool',
+        'is_unlimited' => 'bool'
+    ];
 
     //Relationships//
     public function coin(): \Illuminate\Database\Eloquent\Relations\BelongsTo

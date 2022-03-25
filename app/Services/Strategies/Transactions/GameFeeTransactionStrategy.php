@@ -31,42 +31,33 @@ class GameFeeTransactionStrategy implements \App\Services\RegisterTransactionSer
         $this->coinTypeRepository = $coinTypeRepository;
     }
 
-    /**
-     * @param Player $player
-     * @param array $payload | [float $coin_amount, string|CoinTypes $coin_type]
-     * @param Model|null $item
-     * @return Transaction
-     * @throws Exception
-     */
-    function createNewTransaction(Player $player, array $payload, Model $item = null): Transaction
+
+    function createNewTransaction(Player $player, array $payload = null, Model $item = null): Transaction
     {
         return $this->run(function () use($player, $payload) {
-            throw_if(!Arr::exists($payload, 'coin_type'), new \InvalidArgumentException('It is mandatory to select which currency will be used in the transaction.'));
+            throw_if(!Arr::exists($payload, 'coin_type') || !isset($payload['coin_type']), new \InvalidArgumentException('It is mandatory to select which currency will be used in the transaction.'));
 
-            throw_if(!Arr::exists($payload, 'coin_amount'), new \InvalidArgumentException('It is mandatory to inform the amount of coins that will be involved in this transaction.'));
-
-            throw_unless($player->checkFunds($payload['coin_amount'], $payload['coin_type']), PlayerHasNoFundsException::class);
-
-            $coinAmount = $payload['coin_amount'];
-
-            $currentFundsOfPlayer = $player->getFunds($payload['coin_type']);
+            throw_if(!Arr::exists($payload, 'coin_amount') || !isset($payload['coin_amount']), new \InvalidArgumentException('It is mandatory to inform the amount of coins that will be involved in this transaction.'));
 
             $coinType = $this->coinTypeRepository->newQuery()->whereAcronym($payload['coin_type'])->first();
 
-            return DB::transaction(function () use($player, $currentFundsOfPlayer, $coinAmount, $coinType) {
+            throw_unless($player->checkFunds($payload['coin_amount'], $coinType->id), PlayerHasNoFundsException::class);
 
-                if(!$player->performsDebit($coinAmount, $coinType->acronym))
-                    throw new PlayerCoinDebitException();
+            $coinAmount = $payload['coin_amount'];
 
-                return $this->transactionRepository->create([
-                    'players_id' => $player->id,
-                    'game_current_amount_of_coins' => $currentFundsOfPlayer,
-                    'game_expected_amount_of_coins' => $currentFundsOfPlayer - $coinAmount,
-                    'coin_amount' => $coinAmount,
-                    'type' => TransactionType::GameFeePayment,
-                    'status' => TransactionStatus::Completed,
-                ]);
-            });
+            $currentFundsOfPlayer = $player->getFunds($coinType->id);
+
+            if(!$player->performsDebit($coinAmount, $coinType->id))
+                throw new PlayerCoinDebitException();
+
+            return $this->transactionRepository->create([
+                'players_id' => $player->id,
+                'game_current_amount_of_coins' => $currentFundsOfPlayer,
+                'game_expected_amount_of_coins' => $currentFundsOfPlayer - $coinAmount,
+                'coin_amount' => $coinAmount,
+                'type' => TransactionType::GameFeePayment,
+                'status' => TransactionStatus::Completed,
+            ]);
 
         }, __FUNCTION__);
     }

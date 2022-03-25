@@ -12,9 +12,9 @@ class AccessoryType extends Model
 
     protected $table = 'accessory_types';
 
-    protected $fillable = ['name', 'description', 'is_free'];
+    protected $fillable = ['name', 'description'];
 
-    protected $hidden = ['id', 'is_free'];
+    protected $hidden = ['id'];
 
     protected $casts = ['is_free' => 'bool'];
 }

@@ -79,21 +79,21 @@ class Player extends Authenticatable
     }
 
     // Methods //
-    public function getFunds(string $coinType): ?float
+    public function getFunds(int $coinTypesId): ?float
     {
         $result = $this->coins()
-            ->where('acronym', $coinType)
+            ->where('id', $coinTypesId)
             ->select('amount')
             ->first(['amount']);
 
         return ($result && Arr::exists($result, 'pivot')) ? $result->pivot->amount : 0;
     }
 
-    public function checkFunds(float $coinAmount, string $coinType) : bool
+    public function checkFunds(float $coinAmount, int $coinTypesId) : bool
     {
         return (
             $this->coins()
-                ->where('acronym', $coinType)
+                ->where('id', $coinTypesId)
                 ->wherePivot('amount', '>=', $coinAmount)
                 ->lockForUpdate()
                 ->count() > 0
@@ -104,36 +104,34 @@ class Player extends Authenticatable
      * @throws PlayerHasNoFundsException
      * @throws Throwable
      */
-    public function performsDebit(float $coinAmount, string $coinType): bool
+    public function performsDebit(float $coinAmount, int $coinTypesId): bool
     {
-        throw_unless($this->checkFunds($coinAmount, $coinType), PlayerHasNoFundsException::class);
+        throw_unless($this->checkFunds($coinAmount, $coinTypesId), PlayerHasNoFundsException::class);
 
-        $currentFunds = $this->getFunds($coinType);
+        $currentFunds = $this->getFunds($coinTypesId);
 
         $newAmount = $currentFunds - $coinAmount;
 
         return $this->coins()
-            ->where('acronym', '=', $coinType)
+            ->where('id', $coinTypesId)
             ->newPivotQuery()
             ->update(['amount' => $newAmount]) > 0;
 
     }
 
-    public function performsCredit(float $coinAmount, string $coinType): bool
+    public function performsCredit(float $coinAmount, int $coinTypesId): bool
     {
-        $coinTypeId = CoinType::query()->where('acronym', '=', $coinType)->first()->id;
-
-        if($this->coins()->where('coin_types_id', '=', $coinTypeId)->count() > 0) {
-            $this->coins()->attach($coinTypeId, ['amount' => $coinAmount]);
+        if($this->coins()->where('coin_types_id', '=', $coinTypesId)->count() > 0) {
+            $this->coins()->attach($coinTypesId, ['amount' => $coinAmount]);
             return true;
         }
 
-        $currentFunds = $this->getFunds($coinType);
+        $currentFunds = $this->getFunds($coinTypesId);
 
         $newAmount = $currentFunds + $coinAmount;
 
         return $this->coins()
-                ->where('acronym', '=', $coinType)
+                ->where('id', $coinTypesId)
                 ->newPivotQuery()
                 ->update(['amount' => $newAmount]) > 0;
     }

@@ -40,7 +40,9 @@ class CreateTransactionsTable extends Migration
             $table->decimal('coin_amount', 16,9)
                 ->nullable();
 
-            $table->foreignId('coin_types_id')->constrained('coin_types');
+            $table->foreignId('coin_types_id')
+                ->nullable()
+                ->constrained('coin_types');
 
             $table->decimal('fee_amount', 16,9)
                 ->default(0)

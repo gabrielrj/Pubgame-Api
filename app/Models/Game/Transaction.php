@@ -2,6 +2,7 @@
 
 namespace App\Models\Game;
 
+use App\EnumTypes\Transactions\TransactionStatus;
 use App\Models\Game\Settings\CoinType;
 use App\Models\Traits\HasUuidKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,6 +45,8 @@ class Transaction extends Model
         'created_at',
         'updated_at',
         'deleted_at',
+        'status',
+
     ];
 
     protected $dates = [
@@ -51,6 +54,25 @@ class Transaction extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    protected $appends = [
+        'status_transaction'
+    ];
+
+    //Attributes//
+    public function getStatusTransactionAttribute(): string
+    {
+        return match ($this->attributes['status']) {
+            TransactionStatus::Pending => 'Pending',
+            TransactionStatus::Scheduled => 'Scheduled',
+            TransactionStatus::InProgress => 'In Progress',
+            TransactionStatus::Failed => 'Failed',
+            TransactionStatus::TerminalFailed => 'Terminal Failed',
+            TransactionStatus::Cancelled => 'Cancelled',
+            TransactionStatus::Completed => 'Completed',
+            default => 'Undefined',
+        };
+    }
 
 
     //Relationships//

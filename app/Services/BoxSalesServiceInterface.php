@@ -10,7 +10,7 @@ interface BoxSalesServiceInterface
 {
     function performsExternalSales(Player $player,
                                    BoxAccessoryType $boxAccessoryType,
-                                   string $hashTransaction) : BoxOfPlayer;
+                                   string $hashTransaction) : bool;
 
     function performsInternalSales(Player $player,
                                    BoxAccessoryType $boxAccessoryType): BoxOfPlayer;

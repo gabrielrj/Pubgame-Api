@@ -16,7 +16,7 @@ class RegisterTransactionStrategy implements \App\Services\RegisterTransactionSe
         $this->registerTransactionService = $registerTransactionService;
     }
 
-    function createNewTransaction(Player $player, array $payload, Model $item = null): Transaction
+    function createNewTransaction(Player $player, array $payload = null, Model $item = null): Transaction
     {
         return $this->registerTransactionService->createNewTransaction($player, $payload, $item);
     }

@@ -32,10 +32,23 @@ class CreateBoxAccessoryTypesTable extends Migration
                 ->default(0)
                 ->nullable(false);
 
+            $table->foreignId('price_coin_id')
+                ->nullable()
+                ->constrained('coin_types');
+
             $table->json('probability_accessory_rarity')
                 ->nullable();
 
-            $table->foreignId('price_coin_id')->constrained('coin_types');
+            $table->boolean('available_for_sale')
+                ->default(true)
+                ->nullable(false);
+
+            $table->unsignedSmallInteger('quantity_for_sale')
+                ->nullable();
+
+            $table->boolean('is_unlimited')
+                ->default(false)
+                ->nullable(false);
 
             $table->softDeletes();
 
