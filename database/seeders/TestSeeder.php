@@ -4,12 +4,14 @@ namespace Database\Seeders;
 
 use App\EnumTypes\Box\BoxCostType;
 use App\EnumTypes\Coin\CoinTypes;
+use App\Models\Game\Settings\Accessory;
 use App\Models\Game\Settings\AccessoryRarityType;
 use App\Models\Game\Settings\AccessoryType;
 use App\Models\Game\Settings\BoxAccessoryType;
 use App\Models\Game\Settings\CoinType;
 use App\Models\Game\Settings\GameType;
 use App\Models\Game\Settings\PubTable;
+use App\Models\Game\Settings\Skill;
 use Illuminate\Database\Seeder;
 
 class TestSeeder extends Seeder
@@ -32,6 +34,10 @@ class TestSeeder extends Seeder
         $this->addAccessoriesType();
 
         $this->addBoxTypes();
+
+        $this->addSkills();
+
+        $this->addAccessories();
     }
 
     private function addCoinTypes(){
@@ -323,5 +329,42 @@ class TestSeeder extends Seeder
             print_r(__FUNCTION__ . PHP_EOL);
             print_r($exception->getMessage() . PHP_EOL);
         }
+    }
+
+    private function addSkills(){
+        try {
+            $skills = [
+                ['name' => 'Reverse the force', 'code' => 'SKILL1'],
+                ['name' => 'Reverse direction', 'code' => 'SKILL2'],
+                ['name' => 'Don"t see the steering bar', 'code' => 'SKILL3'],
+                ['name' => 'Strength speed', 'code' => 'SKILL4'],
+                ['name' => 'Direction speed', 'code' => 'SKILL5'],
+                ['name' => 'Blur vision', 'code' => 'SKILL6'],
+            ];
+
+            foreach ($skills as $type){
+
+                Skill::query()
+                    ->firstOrCreate([
+                        'name' => $type['name']
+                    ], $type);
+            }
+        }catch (\Exception $exception){
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
+        }
+        //['type_id', 'rarity_id', 'name', 'description', 'available_for_sale', 'available_quantity', 'is_unlimited', 'skills_id', 'modifier', 'is_free']
+    }
+
+    private function addAccessories(){
+        try {
+            if(Accessory::query()->count() == 0){
+                Accessory::factory(100)->create();
+            }
+        }catch (\Exception $exception){
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
+        }
+        //['type_id', 'rarity_id', 'name', 'description', 'available_for_sale', 'available_quantity', 'is_unlimited', 'skills_id', 'modifier', 'is_free']
     }
 }
