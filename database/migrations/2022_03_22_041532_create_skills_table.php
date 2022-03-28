@@ -20,6 +20,8 @@ class CreateSkillsTable extends Migration
 
             $table->string('description', 256)->nullable();
 
+            $table->string('code', 20)->index();
+
             $table->softDeletes();
 
             $table->timestamps();
