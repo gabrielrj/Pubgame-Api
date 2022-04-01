@@ -4,6 +4,9 @@ services:
   pubgame_api:
     container_name: pubgame_api_app_laravel
     build:
+      args:
+        user: gabriel
+        uid: 1000
       context: .
       dockerfile: Dockerfile
     image: laravel-app
@@ -50,6 +53,12 @@ services:
 
   # queue
   queue:
+    build:
+      args:
+        user: gabriel
+        uid: 1000
+      context: .
+      dockerfile: Dockerfile
     container_name: pubgame_queue
     restart: unless-stopped
     command: "php artisan queue:work"
