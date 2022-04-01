@@ -25,7 +25,6 @@ RUN docker-php-ext-install pdo_mysql \
     bcmath \
     gd \
     sockets \
-    pdo_odbc \
     pdo_pgsql \
     openssl \
     mysqli \
