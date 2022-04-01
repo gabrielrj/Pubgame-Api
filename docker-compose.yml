@@ -41,7 +41,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: dhxy8hkIDP&Y
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_USER: ${DB_USERNAME}
     volumes:
@@ -50,6 +50,15 @@ services:
       - "3388:3306"
     networks:
       - pubnetwork
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    links:
+      - mysql
+    ports:
+      - "8081:8081"
+    environment:
+      - PMA_ARBITRARY=1
 
   # queue
   queue:

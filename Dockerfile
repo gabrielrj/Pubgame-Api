@@ -27,7 +27,6 @@ RUN docker-php-ext-install pdo_mysql \
     sockets \
     pdo_pgsql \
     openssl \
-    mysqli \
     imap \
     sodium \
     gettext \
