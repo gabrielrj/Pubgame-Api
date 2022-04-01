@@ -1,9 +1,4 @@
-version: '3'
-
-networks:
-  pub:
-    driver: bridge
-
+version: "3.7"
 services:
   # image project
   pubgame_api:
@@ -15,8 +10,6 @@ services:
       dockerfile: Dockerfile
     image: laravel-app
     restart: unless-stopped
-    ports:
-      - "9004:8000"
     working_dir: /var/www/
     volumes:
       - ./:/var/www
@@ -24,21 +17,11 @@ services:
       - redis
       - queue
     networks:
-      - pub
+      - pubnetwork
 
-  #NODE
-  node:
-    image: node:14.17.3
-    container_name: node_pub
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-    entrypoint: ['npm']
-
-  #Host
+  # nginx
   nginx:
-    image: nginx:stable-alpine
-    container_name: nginx_pub
+    image: nginx:alpine
     restart: unless-stopped
     ports:
       - "7000:80"
@@ -46,16 +29,13 @@ services:
       - ./:/var/www
       - ./docker/nginx/:/etc/nginx/conf.d/
     networks:
-      pub:
+      - pubnetwork
 
-  #Database
+  # db mysql
   mysql:
-    image: mysql:8
-    container_name: mysql_pub
+    image: mysql:8.0.28
+    command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
-    tty: true
-    ports:
-      - "9306:3306"
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -63,6 +43,8 @@ services:
       MYSQL_USER: ${DB_USERNAME}
     volumes:
       - ./.docker/mysql/dbdata:/var/lib/mysql
+    networks:
+      - pubnetwork
 
   # queue
   queue:
@@ -79,10 +61,14 @@ services:
     depends_on:
       - redis
     networks:
-      - pub
+      - pubnetwork
 
   # redis
   redis:
     image: redis:latest
     networks:
-      - pub
+      - pubnetwork
+
+networks:
+  pubnetwork:
+    driver: bridge

@@ -1,4 +1,4 @@
-FROM php:8-fpm-alpine
+FROM php:8.0.8-fpm
 
 # Arguments defined in docker-compose.yml
 ARG user
@@ -18,7 +18,24 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets
+RUN docker-php-ext-install pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    sockets \
+    pdo_odbc \
+    pdo_pgsql \
+    openssl \
+    mongodb \
+    mysqli \
+    imap \
+    sodium \
+    gettext \
+    fileinfo \
+    curl \
+    bz2
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
