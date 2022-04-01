@@ -18,20 +18,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    gd \
-    sockets \
-    openssl \
-    imap \
-    sodium \
-    gettext \
-    fileinfo \
-    curl \
-    bz2
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets sodium
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
