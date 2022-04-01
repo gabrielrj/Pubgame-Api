@@ -7,7 +7,7 @@ services:
       args:
         user: gabriel
         uid: 1000
-      context: .
+      context: ./
       dockerfile: Dockerfile
     image: laravel-app
     restart: unless-stopped
@@ -26,7 +26,7 @@ services:
     image: nginx:alpine
     restart: unless-stopped
     ports:
-      - "8989:80"
+      - "80:80"
     volumes:
       - ./:/var/www
       - ./docker/nginx/:/etc/nginx/conf.d/
@@ -47,7 +47,7 @@ services:
     volumes:
       - ./.docker/mysql/dbdata:/var/lib/mysql
     ports:
-      - "3388:3306"
+      - "3306:3306"
     networks:
       - pubnetwork
 
@@ -66,7 +66,7 @@ services:
       args:
         user: gabriel
         uid: 1000
-      context: .
+      context: ./
       dockerfile: Dockerfile
     container_name: pubgame_queue
     restart: unless-stopped
