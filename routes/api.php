@@ -39,9 +39,7 @@ Route::prefix('game')->group(function () {
 
     });
 
-    Route::prefix('players')->group(function () {
-        Route::get('/', [\App\Http\Controllers\Api\Game\Player\PlayerController::class, 'index']);
-    });
+
 });
 
 
@@ -56,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('game')->group(function () {
 
         Route::prefix('players')->group(function () {
-            return \request()->user();
+            Route::get('/', [\App\Http\Controllers\Api\Game\Player\PlayerController::class, 'index']);
         });
 
     });
