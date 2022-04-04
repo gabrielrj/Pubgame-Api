@@ -1,4 +1,5 @@
 FROM php:8.0.8-fpm
+FROM node:14.17.3
 
 # Arguments defined in docker-compose.yml
 ARG user
@@ -22,14 +23,16 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd sockets
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Get latest Nodejs (Npm)
-RUN apt-get update && apt-get install -y nodejs npm
-COPY . /var/www/
+COPY --from=npm:latest /usr/bin/npm /usr/bin/npm
 
 # Create system user to run Composer and Artisan Commands
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
+
+# Create system user to run Npm Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.npm && \
     chown -R $user:$user /home/$user
 
 # Install redis
