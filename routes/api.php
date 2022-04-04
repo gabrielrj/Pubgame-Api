@@ -29,8 +29,6 @@ Route::prefix('game')->group(function () {
     Route::prefix('auth')->group(function () {
 
         Route::prefix('players')->group(function () {
-            Route::get('/', [\App\Http\Controllers\Api\Game\Player\PlayerController::class, 'index']);
-
             Route::post('sign-in', [PlayerAuthenticationController::class, 'loginWithEmailAndPassword']);
 
             Route::post('sign-up', [PlayerRegisterController::class, 'signUp']);
@@ -39,6 +37,10 @@ Route::prefix('game')->group(function () {
 
         });
 
+    });
+
+    Route::prefix('players')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Api\Game\Player\PlayerController::class, 'index']);
     });
 });
 
