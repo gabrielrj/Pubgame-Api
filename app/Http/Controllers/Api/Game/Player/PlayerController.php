@@ -18,7 +18,8 @@ class PlayerController extends Controller
         $this->playerRepository = $playerRepository;
     }
 
-    function index(Request $request){
+    function index(Request $request): \Illuminate\Http\JsonResponse
+    {
         $this->actionName = 'get logged player data';
 
         return $this->run(function () use($request){
