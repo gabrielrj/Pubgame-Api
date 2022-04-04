@@ -20,7 +20,8 @@ services:
     networks:
       - pubnetwork
 
-  npm:
+  node:
+    container_name: pubgame_node
     image: node:14.17.3
     working_dir: /var/www
     entrypoint: ["npm"]
@@ -47,10 +48,7 @@ services:
     command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: dhxy8hkIDP&Y
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
     volumes:
       - ./.docker/mysql/dbdata:/var/lib/mysql
     ports:
