@@ -23,7 +23,10 @@ class PlayerController extends Controller
         $this->actionName = 'get logged player data';
 
         return $this->run(function (){
-            return $this->playerRepository->findById(auth()->id());
+            return [
+                'player' => auth('player')->user(),
+                'player_2' => auth()->user(),
+            ];
         });
     }
 }
