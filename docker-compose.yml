@@ -20,14 +20,6 @@ services:
     networks:
       - pubnetwork
 
-  node:
-    container_name: pubgame_node
-    image: node:14.17.3
-    working_dir: /var/www
-    entrypoint: ["npm"]
-    volumes:
-      - "./www/:/var/www"
-
   # nginx
   nginx:
     container_name: pubgame_nginx
