@@ -33,8 +33,8 @@ RUN mkdir -p /home/$user/.composer && \
 
 # Create system user to run Npm Commands
 #RUN useradd -G www-data,root -u $uid -d /home/$user $user
-#RUN mkdir -p /home/$user/.npm && \
-#    chown -R $user:$user /home/$user
+RUN mkdir -p /home/$user/.npm && \
+    chown -R $user:$user /home/$user
 
 # Install redis
 RUN pecl install -o -f redis \
