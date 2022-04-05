@@ -14,6 +14,8 @@ class CreatePlayersCoinTypesTable extends Migration
     public function up()
     {
         Schema::create('players_coin_types', function (Blueprint $table) {
+            $table->id();
+
             $table->foreignId('players_id')->constrained('players');
 
             $table->foreignId('coin_types_id')->constrained('coin_types');
