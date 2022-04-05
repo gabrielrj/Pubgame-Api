@@ -13,11 +13,34 @@ class Accessory extends Model
 
     protected $table = 'accessories';
 
-    protected $fillable = ['type_id', 'rarity_id', 'name', 'description', 'available_for_sale', 'available_quantity', 'is_unlimited', 'skills_id', 'modifier', 'is_free'];
+    protected $fillable = [
+        'type_id',
+        'rarity_id',
+        'name',
+        'description',
+        'available_for_sale',
+        'available_quantity',
+        'is_unlimited',
+        'skills_id',
+        'modifier',
+        'is_free',
+        'edition'
+    ];
 
-    protected $hidden = ['type_id', 'rarity_id', 'skills_id', 'available_for_sale', 'is_unlimited', 'is_free'];
+    protected $hidden = [
+        'type_id',
+        'rarity_id',
+        'skills_id',
+        'available_for_sale',
+        'is_unlimited',
+        'is_free'
+    ];
 
-    protected $casts = ['is_free' => 'bool', 'is_unlimited' => 'bool', 'available_for_sale' => 'bool'];
+    protected $casts = [
+        'is_free' => 'bool',
+        'is_unlimited' => 'bool',
+        'available_for_sale' => 'bool'
+    ];
 
     /**
      * @return AccessoryFactory

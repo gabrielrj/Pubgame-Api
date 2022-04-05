@@ -269,7 +269,8 @@ class TestSeeder extends Seeder
                     'contains_avatar' => true,
                     'is_unlimited' => true,
                     'available_for_sale' => true,
-                    'quantity_for_sale' => null
+                    'quantity_for_sale' => null,
+                    'quantity_of_raffle_accessories' => 2
                 ],
 
                 ['name' => 'Accessories Box 1', 'cost_type' => BoxCostType::Paid,
@@ -353,7 +354,6 @@ class TestSeeder extends Seeder
             print_r(__FUNCTION__ . PHP_EOL);
             print_r($exception->getMessage() . PHP_EOL);
         }
-        //['type_id', 'rarity_id', 'name', 'description', 'available_for_sale', 'available_quantity', 'is_unlimited', 'skills_id', 'modifier', 'is_free']
     }
 
     private function addAccessories(){
@@ -365,6 +365,5 @@ class TestSeeder extends Seeder
             print_r(__FUNCTION__ . PHP_EOL);
             print_r($exception->getMessage() . PHP_EOL);
         }
-        //['type_id', 'rarity_id', 'name', 'description', 'available_for_sale', 'available_quantity', 'is_unlimited', 'skills_id', 'modifier', 'is_free']
     }
 }

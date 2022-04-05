@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Services\AccessoryRafflebyBoxService;
-use App\Services\AccessoryRafflebyBoxServiceInterface;
-use App\Services\BoxSalesService;
-use App\Services\BoxSalesServiceInterface;
+use App\Services\AccessoryRaffleByBoxService;
+use App\Services\AccessoryRaffleByBoxServiceInterface;
 use App\Services\ErrorTrappingService;
 use App\Services\ErrorTrappingServiceInterface;
 use App\Services\Repositories\AccessoryOfPlayerRepository;
@@ -79,8 +77,7 @@ class ServiceBindProvider extends ServiceProvider
         $this->app->bind(AvatarRepositoryInterface::class, AvatarRepository::class);
         $this->app->bind(GameRepositoryInterface::class, GameRepository::class);
         $this->app->bind(TransactionRepositoryInterface::class, TransactionRepository::class);
-        $this->app->bind(BoxSalesServiceInterface::class, BoxSalesService::class);
         $this->app->bind(ErrorTrappingServiceInterface::class, ErrorTrappingService::class);
-        $this->app->bind(AccessoryRafflebyBoxServiceInterface::class, AccessoryRafflebyBoxService::class);
+        $this->app->bind(AccessoryRaffleByBoxServiceInterface::class, AccessoryRaffleByBoxService::class);
     }
 }
