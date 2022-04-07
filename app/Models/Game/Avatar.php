@@ -27,6 +27,11 @@ class Avatar extends Model
     protected $hidden = ['id', 'box_id', 'players_id'];
 
     //Relationships//
+    public function player(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Player::class, 'players_id', 'id');
+    }
+
     public function accessories(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(AccessoryOfPlayer::class, 'avatars_id');

@@ -32,7 +32,7 @@ class CreateAccessoriesTable extends Migration
                 ->default(true)
                 ->nullable(false);
 
-            $table->integer('available_quantity')
+            $table->unsignedInteger('available_quantity')
                 ->nullable();
 
             $table->boolean('is_unlimited')

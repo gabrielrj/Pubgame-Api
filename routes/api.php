@@ -55,6 +55,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::prefix('players')->group(function () {
             Route::get('/', [\App\Http\Controllers\Api\Game\Player\PlayerController::class, 'index']);
+
+            Route::prefix('acquisition-of-box')->group(function () {
+                Route::post('/free', [\App\Http\Controllers\Api\Game\Player\AcquisitionOfBoxController::class, 'freeBoxPurchase']);
+            });
         });
 
     });

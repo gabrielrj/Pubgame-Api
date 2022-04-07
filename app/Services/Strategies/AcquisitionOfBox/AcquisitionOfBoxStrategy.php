@@ -2,6 +2,8 @@
 
 namespace App\Services\Strategies\AcquisitionOfBox;
 
+use App\Models\Game\BoxOfPlayer;
+use App\Models\Game\Player;
 use App\Services\AcquisitionOfBoxServiceInterface;
 
 class AcquisitionOfBoxStrategy implements \App\Services\AcquisitionOfBoxServiceInterface
@@ -11,5 +13,10 @@ class AcquisitionOfBoxStrategy implements \App\Services\AcquisitionOfBoxServiceI
     public function __construct(AcquisitionOfBoxServiceInterface $acquisitionOfBoxService)
     {
         $this->acquisitionOfBoxService = $acquisitionOfBoxService;
+    }
+
+    function acquisitionOfBox(Player $player, array $payload): BoxOfPlayer
+    {
+        return $this->acquisitionOfBoxService->acquisitionOfBox($player, $payload);
     }
 }

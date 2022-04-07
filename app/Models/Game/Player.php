@@ -2,10 +2,13 @@
 
 namespace App\Models\Game;
 
+use App\EnumTypes\Avatar\AvatarTypeOfCost;
+use App\EnumTypes\Box\BoxCostType;
 use App\Exceptions\Api\Player\Transactions\PlayerHasNoFundsException;
 use App\Models\Errors\ErrorLog;
 use App\Models\Game\Settings\CoinType;
 use App\Models\Traits\HasUuidKey;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -78,6 +81,21 @@ class Player extends Authenticatable
         return $this->hasMany(Transaction::class, 'players_id');
     }
 
+    public function boxes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(BoxOfPlayer::class, 'players_id');
+    }
+
+    public function accessories(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(AccessoryOfPlayer::class, 'players_id');
+    }
+
+    public function avatars(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Avatar::class, 'players_id');
+    }
+
     // Methods //
     public function getFunds(int $coinTypesId): ?float
     {
@@ -134,5 +152,23 @@ class Player extends Authenticatable
                 ->where('id', $coinTypesId)
                 ->newPivotQuery()
                 ->update(['amount' => $newAmount]) > 0;
+    }
+
+    public function alreadyHaveFreeBoxOrAvatar() : bool
+    {
+        $haveFreeBox = $this->boxes()
+                ->withTrashed()
+                ->whereHas('type', function (Builder $subQuery1){
+                    $subQuery1->whereCostType(BoxCostType::Free);
+                })
+                ->count() > 0;
+
+        if($haveFreeBox)
+            return true;
+
+        return $this->avatars()
+                ->withTrashed()
+                ->whereCostType(AvatarTypeOfCost::Free)
+                ->count() > 0;
     }
 }

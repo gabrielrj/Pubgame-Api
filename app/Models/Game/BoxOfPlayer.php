@@ -2,6 +2,7 @@
 
 namespace App\Models\Game;
 
+use App\Models\Game\Settings\BoxAccessoryType;
 use App\Models\Traits\HasUuidKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,4 +28,8 @@ class BoxOfPlayer extends Model
         'is_open' => 'bool',
         'is_pending_payment' => 'bool'
     ];
+
+    public function type(){
+        return $this->belongsTo(BoxAccessoryType::class, 'box_accessory_types_id', 'id');
+    }
 }
