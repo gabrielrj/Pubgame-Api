@@ -27,4 +27,9 @@ class AccessoryOfPlayer extends Model
     protected $dates = ['engagement_date_in_avatar'];
 
     protected $casts = ['is_pending_payment' => 'bool'];
+
+    public function transaction_item(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    {
+        return $this->morphTo(TransactionItem::class, 'itenable');
+    }
 }

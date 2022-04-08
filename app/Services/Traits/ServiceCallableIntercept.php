@@ -13,19 +13,16 @@ trait ServiceCallableIntercept
 
     protected ?Authenticatable $userLogged = null;
 
-    public function __construct()
-    {
-        if(auth('player')->check())
-            $this->userLogged = auth('player')->user();
-        elseif(auth()->check())
-            $this->userLogged = auth()->user();
-    }
-
     /**
      * @throws Exception
      */
     function run(callable $fn, string $fnName){
         try {
+            if(auth('player')->check())
+                $this->userLogged = auth('player')->user();
+            elseif(auth()->check())
+                $this->userLogged = auth()->user();
+
             $this->file = self::class;
 
             return $fn();

@@ -11,13 +11,4 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
     use HasQueryByUuid;
 
     protected string $modelClass = Transaction::class;
-
-    public function create(array $payload, Model $item = null): Model
-    {
-        $transaction = parent::create($payload);
-
-        $item?->transactions()->save($transaction);
-
-        return $transaction;
-    }
 }

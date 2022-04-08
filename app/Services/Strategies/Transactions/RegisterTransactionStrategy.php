@@ -3,12 +3,17 @@
 namespace App\Services\Strategies\Transactions;
 
 use App\Models\Game\Player;
+use App\Models\Game\ProductTransactionable;
 use App\Models\Game\Transaction;
 use App\Services\RegisterTransactionServiceInterface;
-use Illuminate\Database\Eloquent\Model;
+use App\Services\Traits\ServiceCallableIntercept;
+use App\Services\TransactionService;
+use Exception;
 
-class RegisterTransactionStrategy implements \App\Services\RegisterTransactionServiceInterface
+class RegisterTransactionStrategy extends TransactionService
 {
+    use ServiceCallableIntercept;
+
     protected RegisterTransactionServiceInterface $registerTransactionService;
 
     public function __construct(RegisterTransactionServiceInterface $registerTransactionService)
@@ -16,8 +21,10 @@ class RegisterTransactionStrategy implements \App\Services\RegisterTransactionSe
         $this->registerTransactionService = $registerTransactionService;
     }
 
-    function createNewTransaction(Player $player, array $payload = null, Model $item = null): Transaction
+    function createNewTransaction(Player $player,
+                                  array $payload = null,
+                                  ProductTransactionable ...$items): Transaction
     {
-        return $this->registerTransactionService->createNewTransaction($player, $payload, $item);
+        return $this->registerTransactionService->createNewTransaction($player, $payload, ...$items);
     }
 }

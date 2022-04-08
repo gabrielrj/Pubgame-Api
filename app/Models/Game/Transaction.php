@@ -28,8 +28,7 @@ class Transaction extends Model
         'fee_percentage',
         'type',
         'status',
-        'itenable_id',
-        'itenable_type'
+        'operation',
     ];
 
     protected $hidden = [
@@ -40,8 +39,6 @@ class Transaction extends Model
         'blockchain_hash_transaction',
         'coin_types_id',
         'game_current_amount_of_coins',
-        'itenable_id',
-        'itenable_type',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -81,8 +78,5 @@ class Transaction extends Model
         return $this->belongsTo(CoinType::class, 'coin_types_id');
     }
 
-    public function itenable(): \Illuminate\Database\Eloquent\Relations\MorphTo
-    {
-        return $this->morphTo();
-    }
+
 }

@@ -57,7 +57,8 @@ class CreateTransactionsTable extends Migration
                 ->default(\App\EnumTypes\Transactions\TransactionStatus::Pending)
                 ->index();
 
-            $table->nullableMorphs('itenable');
+            $table->string('operation', 5)
+                ->index();
 
             $table->softDeletes();
 

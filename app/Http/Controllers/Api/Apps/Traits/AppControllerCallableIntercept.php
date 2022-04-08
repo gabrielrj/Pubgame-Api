@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Apps\Traits;
 
 use App\Exceptions\Api\Player\AuthAndAccess\UnauthorizedPlayerAccessException;
+use App\Exceptions\Api\User\AuthAndAccess\UnauthorizedUserAccessException;
 use App\Http\Controllers\Api\ApiResponseException;
 use App\Models\Game\Player;
 use App\Models\User;
@@ -17,7 +18,7 @@ trait AppControllerCallableIntercept
     {
         try {
             if(auth()->user() && !(auth()->user() instanceof User))
-                throw new UnauthorizedPlayerAccessException();
+                throw new UnauthorizedUserAccessException();
 
             $response = $fn();
 

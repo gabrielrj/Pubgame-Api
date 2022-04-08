@@ -2,7 +2,6 @@
 
 namespace App\Models\Game;
 
-use App\Models\Game\Settings\AccessoryRarityType;
 use App\Models\Traits\HasUuidKey;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,6 +34,11 @@ class Avatar extends Model
     public function accessories(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(AccessoryOfPlayer::class, 'avatars_id');
+    }
+
+    public function transaction_item(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    {
+        return $this->morphTo(TransactionItem::class, 'itenable');
     }
 
     //Attributes//

@@ -6,10 +6,9 @@ use App\Models\Game\Settings\GameType;
 use App\Models\Game\Settings\PubTable;
 use App\Models\Traits\HasUuidKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Game extends Model
+class Game extends ProductTransactionable
 {
     use HasFactory, SoftDeletes, HasUuidKey;
 
@@ -67,10 +66,7 @@ class Game extends Model
         return $this->belongsTo(PubTable::class, 'pub_tables_id');
     }
 
-    public function transactions(): \Illuminate\Database\Eloquent\Relations\MorphMany
-    {
-        return $this->morphMany(Transaction::class, 'itenable');
-    }
+
 
 
 }

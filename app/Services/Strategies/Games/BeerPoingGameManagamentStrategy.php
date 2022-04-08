@@ -60,7 +60,7 @@ class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
             $gameTypeId = $this->gameTypeRepository->newQuery()->whereName('Beer Poing')->first()->id;
 
             return DB::transaction(function () use ($player, $gameTypeId, $tableFee, $avatar, $table, $accessoriesCount, $transactionService) {
-                $gameFeeTransaction = $transactionService->createNewTransaction($player, ['coin_amount' => $tableFee, 'coin_type' => CoinTypes::PubBeerCoin]);
+                //$gameFeeTransaction = $transactionService->createNewTransaction($player, ['coin_amount' => $tableFee, 'coin_type' => CoinTypes::PubBeerCoin]);
 
                 $newGame = $this->gameRepository->newQuery()->create([
                     'game_types_id' => $gameTypeId,
@@ -73,7 +73,13 @@ class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
                     'claim_status' => ClaimStatus::PendingCompletionGame,
                 ]);
 
-                $newGame?->transactions()->save($gameFeeTransaction);
+                //$newGame?->transactions()->save($gameFeeTransaction);
+
+                $gameFeeTransaction = $transactionService->createNewTransaction(
+                    $player,
+                    ['coin_amount' => $tableFee, 'coin_type' => CoinTypes::PubBeerCoin],
+                    $newGame
+                );
 
                 return isset($newGame);
             });

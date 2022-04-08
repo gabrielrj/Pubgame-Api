@@ -62,7 +62,7 @@ class InternalAcquisitionOfBox implements \App\Services\AcquisitionOfBoxServiceI
             $this->transactionService = new RegisterTransactionStrategy(app()->make(BoxPurchaseInternalTransactionStrategy::class));
 
             return DB::transaction(function () use ($player, $boxType) {
-                $this->transactionService->createNewTransaction($player, ['coin_types_id' => $boxType->price_coin_id, 'box_price' => $boxType->price]);
+                //$this->transactionService->createNewTransaction($player, ['coin_types_id' => $boxType->price_coin_id, 'box_price' => $boxType->price]);
 
                 $avatar = null;
 
@@ -75,6 +75,10 @@ class InternalAcquisitionOfBox implements \App\Services\AcquisitionOfBoxServiceI
                 $accessoryForSale = $this->accessoryRaffleByBoxService->returnsDrawnAccessory($boxType);
 
                 $accessory = $this->accessoryService->createNewAccessoryToPlayer($player, $accessoryForSale);
+
+                $this->transactionService->createNewTransaction($player,
+                    ['coin_types_id' => $boxType->price_coin_id, 'box_price' => $boxType->price],
+                    $avatar, $accessory);
 
                 return [
                     'avatar' => $avatar,

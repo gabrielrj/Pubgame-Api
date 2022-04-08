@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionablesTable extends Migration
+class CreateTransactionItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateTransactionablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactionables', function (Blueprint $table) {
+        Schema::create('transaction_items', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('transactions_id')->constrained('transactions');
 
-            $table->nullableMorphs('transactionable');
+            $table->nullableMorphs('itenable');
+
+            $table->softDeletes();
 
             $table->timestamps();
         });
@@ -31,6 +33,6 @@ class CreateTransactionablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactionables');
+        Schema::dropIfExists('transaction_items');
     }
 }
