@@ -18,10 +18,13 @@ class AccessoryOfPlayer extends Model
         'box_id',
         'players_id',
         'avatars_id',
-        'engagement_date_in_avatar'
+        'engagement_date_in_avatar',
+        'is_pending_payment'
     ];
 
     protected $hidden = ['id', 'accessories_id', 'players_id', 'avatars_id'];
 
     protected $dates = ['engagement_date_in_avatar'];
+
+    protected $casts = ['is_pending_payment' => 'bool'];
 }

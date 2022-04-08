@@ -15,7 +15,7 @@ class AcquisitionOfBoxStrategy implements \App\Services\AcquisitionOfBoxServiceI
         $this->acquisitionOfBoxService = $acquisitionOfBoxService;
     }
 
-    function acquisitionOfBox(Player $player, array $payload): BoxOfPlayer
+    function acquisitionOfBox(Player $player, array $payload)
     {
         return $this->acquisitionOfBoxService->acquisitionOfBox($player, $payload);
     }

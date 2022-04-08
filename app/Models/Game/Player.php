@@ -156,7 +156,7 @@ class Player extends Authenticatable
 
     public function alreadyHaveFreeBoxOrAvatar() : bool
     {
-        $haveFreeBox = $this->boxes()
+        /*$haveFreeBox = $this->boxes()
                 ->withTrashed()
                 ->whereHas('type', function (Builder $subQuery1){
                     $subQuery1->whereCostType(BoxCostType::Free);
@@ -164,11 +164,15 @@ class Player extends Authenticatable
                 ->count() > 0;
 
         if($haveFreeBox)
-            return true;
+            return true;*/
 
         return $this->avatars()
-                ->withTrashed()
                 ->whereCostType(AvatarTypeOfCost::Free)
                 ->count() > 0;
+    }
+
+    public function alreadyReachedAvatarLimit(): bool
+    {
+        return $this->avatars()->count() >= 15;
     }
 }

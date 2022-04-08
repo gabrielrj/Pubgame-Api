@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\EnumTypes\Accessory\AccessoryEdition;
 use App\Models\Game\Settings\Accessory;
 use App\Models\Game\Settings\BoxAccessoryType;
 use App\Services\Repositories\AccessoryRepositoryInterface;
@@ -50,13 +51,18 @@ class AccessoryRaffleByBoxService implements AccessoryRaffleByBoxServiceInterfac
                 $totalChances = $totalChances + $probability->chances;
             }
 
-            return $this->aRepository->newQuery()
+            $accessoryQuery = $this->aRepository->newQuery()
                 ->where('rarity_id', '=', $rarityId)
                 ->where('is_free', '=', $isFree)
-                ->where('available_for_sale', '=', true)
-                ->where('edition', '=', $boxType->accessory_edition)
-                ->inRandomOrder()
-                ->first();
+                ->where('available_for_sale', '=', true);
+
+            if($boxType->accessory_edition == AccessoryEdition::SpecialEdition){
+                $accessoryQuery->where('available_quantity', '>', 0)
+                    ->where('edition', '=', $boxType->accessory_edition)
+                    ->lockForUpdate();
+            }
+
+            return $accessoryQuery->inRandomOrder()->first();
         }, __FUNCTION__);
     }
 }

@@ -27,6 +27,10 @@ class BoxPurchaseInternalTransactionStrategy implements \App\Services\RegisterTr
     }
 
     /**
+     * @param Player $player
+     * @param array|null $payload ['coin_types_id', 'box_price']
+     * @param Model|null $item
+     * @return Transaction
      * @throws Exception
      */
     function createNewTransaction(Player $player, array $payload = null, Model $item = null): Transaction
