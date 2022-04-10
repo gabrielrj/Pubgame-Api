@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\EnumTypes\Accessory\AccessoryEdition;
 use App\Models\Game\Settings\Accessory;
 use App\Models\Game\Settings\AccessoryRarityType;
 use App\Models\Game\Settings\AccessoryType;
@@ -20,19 +21,22 @@ class AccessoryFactory extends Factory
      * @return array
      * @throws Exception
      */
-    public function definition()
+    public function definition(): array
     {
+        $edition = array_rand([AccessoryEdition::SpecialEdition, AccessoryEdition::DefaultEdition]);
+
         return [
             'type_id' => AccessoryType::query()->inRandomOrder()->first()->id,
             'rarity_id' => AccessoryRarityType::query()->inRandomOrder()->first()->id,
             'name' => $this->faker->word,
             'description' => null,
             'available_for_sale' => true,
-            'available_quantity' => 100,
-            'is_unlimited' => false,
+            'available_quantity' => $edition == AccessoryEdition::DefaultEdition ? 100 : null,
+            'is_unlimited' => $edition == AccessoryEdition::DefaultEdition,
             'skills_id' => Skill::query()->inRandomOrder()->first()->id,
-            'modifier' => random_int(1, 10),
-            'is_free' => false
+            'modifier' => array_rand(['+1', '-5', '+10', '-4', '8', '+4', '-1', '-10', '3']),
+            'is_free' => random_int(0, 1),
+            'edition' => $edition,
         ];
     }
 }
