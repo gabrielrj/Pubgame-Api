@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Game\Player;
 
 use App\Http\Controllers\Api\Game\Traits\GameControllerCallableIntercept;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Game\FreeAcquisitionBoxRequest;
+use App\Http\Requests\Api\Game\InternalPurchaseBoxRequest;
 use App\Services\AcquisitionOfBoxServiceInterface;
 use App\Services\Repositories\PlayerRepositoryInterface;
 use App\Services\Strategies\AcquisitionOfBox\AcquisitionOfBoxStrategy;
@@ -23,7 +25,7 @@ class AcquisitionOfBoxController extends Controller
         $this->playerRepository = $playerRepository;
     }
 
-    public function freeBoxAcquisition(Request $request): \Illuminate\Http\JsonResponse
+    public function freeBoxAcquisition(FreeAcquisitionBoxRequest $request): \Illuminate\Http\JsonResponse
     {
         $this->actionName = 'free box acquisition';
 
@@ -36,7 +38,7 @@ class AcquisitionOfBoxController extends Controller
         });
     }
 
-    public function internalBoxPurchase(Request $request): \Illuminate\Http\JsonResponse
+    public function internalBoxPurchase(InternalPurchaseBoxRequest $request): \Illuminate\Http\JsonResponse
     {
         $this->actionName = 'internal box purchase';
 

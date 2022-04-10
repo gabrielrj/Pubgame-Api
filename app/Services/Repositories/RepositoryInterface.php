@@ -23,4 +23,6 @@ interface RepositoryInterface
     function delete(Model $model): bool;
 
     function forceDelete(Model $model): ?bool;
+
+    function createAndGetData(array $payload, array $relationships = []) : ?Model;
 }

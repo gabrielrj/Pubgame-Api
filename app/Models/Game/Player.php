@@ -100,18 +100,18 @@ class Player extends Authenticatable
     public function getFunds(int $coinTypesId): ?float
     {
         $result = $this->coins()
-            ->where('id', $coinTypesId)
+            ->where('coin_types_id', $coinTypesId)
             ->select('amount')
             ->first(['amount']);
 
-        return ($result && Arr::exists($result, 'pivot')) ? $result->pivot->amount : 0;
+        return ($result && Arr::exists($result, 'amount')) ? $result->amount : 0;
     }
 
     public function checkFunds(float $coinAmount, int $coinTypesId) : bool
     {
         return (
             $this->coins()
-                ->where('id', $coinTypesId)
+                ->where('coin_types_id', $coinTypesId)
                 ->wherePivot('amount', '>=', $coinAmount)
                 ->lockForUpdate()
                 ->count() > 0
@@ -131,7 +131,7 @@ class Player extends Authenticatable
         $newAmount = $currentFunds - $coinAmount;
 
         return $this->coins()
-            ->where('id', $coinTypesId)
+            ->where('coin_types_id', $coinTypesId)
             ->newPivotQuery()
             ->update(['amount' => $newAmount]) > 0;
 

@@ -28,19 +28,20 @@ class AccessoryService implements AccessoryServiceInterface
     function createNewAccessoryToPlayer(Player $player, Accessory $accessory, bool $pendingPayment = false): AccessoryOfPlayer
     {
         return $this->run(function () use($player, $accessory, $pendingPayment) {
-            return DB::transaction(function () use ($player, $accessory, $pendingPayment) {
-                if($accessory->edition == AccessoryEdition::SpecialEdition)
-                    $this->updateAccessoriesStock($accessory);
+            if($accessory->edition == AccessoryEdition::SpecialEdition)
+                $this->updateAccessoriesStock($accessory);
 
-                return $this->accessoryOfPlayerRepository->create([
-                    'accessories_id' => $accessory->id,
-                    'players_id' => $player->id,
-                    'is_pending_payment' => $pendingPayment
-                ]);
-            });
+            return $this->accessoryOfPlayerRepository->createAndGetData([
+                'accessories_id' => $accessory->id,
+                'players_id' => $player->id,
+                'is_pending_payment' => $pendingPayment
+            ], ['accessory.skill', 'accessory.type', 'accessory.rarity']);
         }, __FUNCTION__);
     }
 
+    /**
+     * @throws Exception
+     */
     private function updateAccessoriesStock(Accessory $accessory): bool
     {
         return $this->run(function () use($accessory) {

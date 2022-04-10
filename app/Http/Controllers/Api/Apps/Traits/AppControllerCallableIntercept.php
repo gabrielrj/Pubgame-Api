@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Apps\Traits;
 
 use App\Exceptions\Api\Player\AuthAndAccess\UnauthorizedPlayerAccessException;
 use App\Exceptions\Api\User\AuthAndAccess\UnauthorizedUserAccessException;
-use App\Http\Controllers\Api\ApiResponseException;
+use App\Http\Controllers\Api\ApiResponseExceptionController;
 use App\Models\Game\Player;
 use App\Models\User;
 use function auth;
@@ -27,7 +27,7 @@ trait AppControllerCallableIntercept
                 'json_data' => $response
             ]);
         }catch (\Exception $exception){
-            $errors = (new ApiResponseException())($exception, $this->actionName);
+            $errors = (new ApiResponseExceptionController())($exception, $this->actionName);
 
             return response()->json($errors, $errors['http_code'])->withHeaders($errors);
         }

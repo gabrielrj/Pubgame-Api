@@ -5,10 +5,12 @@ namespace App\Services\Strategies\AcquisitionOfBox;
 use App\EnumTypes\Accessory\AccessoryEdition;
 use App\EnumTypes\Avatar\AvatarTypeOfCost;
 use App\EnumTypes\Box\BoxCostType;
+use App\Exceptions\Api\FeatureNotImplementedException;
 use App\Exceptions\Api\Player\AcquisitionOfBox\CrateChosenByPlayerIsNotFreeException;
 use App\Exceptions\Api\Player\AcquisitionOfBox\PlayerHasBoxOrFreeAvatarException;
 use App\Models\Game\Player;
 use App\Services\AccessoryServiceInterface;
+use App\Services\AcquisitionOfBoxService;
 use App\Services\AvatarServiceInterface;
 use App\Services\Repositories\AccessoryRepositoryInterface;
 use App\Services\Repositories\BoxAccessoryTypeRepositoryInterface;
@@ -17,7 +19,7 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
-class FreeBoxPurchaseStrategy implements \App\Services\AcquisitionOfBoxServiceInterface
+class FreeBoxPurchaseStrategy extends AcquisitionOfBoxService
 {
     use ServiceCallableIntercept;
 
@@ -43,9 +45,9 @@ class FreeBoxPurchaseStrategy implements \App\Services\AcquisitionOfBoxServiceIn
     function acquisitionOfBox(Player $player, array $payload): bool
     {
         return $this->run(function () use ($player, $payload){
-            throw_unless(Arr::exists($payload, 'box_type_id'), new \InvalidArgumentException('It is mandatory to choose which box will be purchased.'));
+            throw_unless(Arr::exists($payload, 'bid'), new \InvalidArgumentException('It is mandatory to choose which box will be purchased.'));
 
-            $boxTypeId = $payload['box_type_id'];
+            $boxTypeId = $payload['bid'];
 
             $boxType = $this->boxAccessoryTypeRepository->newQuery()->find($boxTypeId);
 
@@ -57,15 +59,18 @@ class FreeBoxPurchaseStrategy implements \App\Services\AcquisitionOfBoxServiceIn
                 ->where('is_free', '=', true)
                 ->where('available_for_sale', '=', true)
                 ->where('edition', '=', AccessoryEdition::DefaultEdition)
-                ->orderByDesc('created_at')
+                ->orderByDesc('id')
                 ->first();
 
             $accessoryFree2 = $this->accessoryRepository->newQuery()
                 ->where('is_free', '=', true)
                 ->where('available_for_sale', '=', true)
                 ->where('edition', '=', AccessoryEdition::DefaultEdition)
-                ->orderBy('created_at')
+                ->orderBy('id')
                 ->first();
+
+            if(!$accessoryFree1 || !$accessoryFree2)
+                throw new FeatureNotImplementedException();
 
 
             return DB::transaction(function () use ($boxType, $player, $accessoryFree1, $accessoryFree2) {

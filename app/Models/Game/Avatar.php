@@ -5,11 +5,10 @@ namespace App\Models\Game;
 use App\Models\Traits\HasUuidKey;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
-class Avatar extends Model
+class Avatar extends ProductTransactionable
 {
     use HasFactory, SoftDeletes, HasUuidKey;
 
@@ -23,7 +22,15 @@ class Avatar extends Model
         'color',
     ];
 
-    protected $hidden = ['id', 'box_id', 'players_id'];
+    protected $hidden = [
+        'id',
+        'box_id',
+        'players_id',
+        'created_at',
+        'updated_at',
+    ];
+
+    protected $appends = ['level'];
 
     //Relationships//
     public function player(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -36,10 +43,6 @@ class Avatar extends Model
         return $this->hasMany(AccessoryOfPlayer::class, 'avatars_id');
     }
 
-    public function transaction_item(): \Illuminate\Database\Eloquent\Relations\MorphTo
-    {
-        return $this->morphTo(TransactionItem::class, 'itenable');
-    }
 
     //Attributes//
 

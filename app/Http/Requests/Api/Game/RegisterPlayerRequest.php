@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Api\Game;
 
 use App\Exceptions\Api\Player\AuthAndAccess\PlayerEmailAndPasswordException;
-use App\Http\Controllers\Api\ApiResponseException;
+use App\Http\Controllers\Api\ApiResponseExceptionController;
 use App\Http\Controllers\Api\Apps\Traits\AppControllerCallableIntercept;
 use Exception;
 use Illuminate\Contracts\Validation\Validator;
@@ -16,6 +16,14 @@ use JetBrains\PhpStorm\ArrayShape;
 
 class RegisterPlayerRequest extends FormRequest
 {
+    use RequestFailedConversionJson;
+
+    protected string $actionName = 'validate user register';
+
+    protected int $errorCode = 422;
+
+    protected int $statusCode = 422;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -31,6 +39,7 @@ class RegisterPlayerRequest extends FormRequest
      *
      * @return array
      */
+    #[ArrayShape(['nickname' => "string[]", 'email' => "array", 'password' => "array"])]
     public function rules(): array
     {
         return [
@@ -46,8 +55,5 @@ class RegisterPlayerRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json((new ApiResponseException())($validator->errors(), 'validate user register', 422), 422));
-    }
+
 }

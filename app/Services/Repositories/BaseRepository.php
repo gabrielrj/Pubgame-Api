@@ -99,4 +99,16 @@ class BaseRepository implements RepositoryInterface
             return $model->forceDelete();
         }, __FUNCTION__);
     }
+
+    /**
+     * @throws Exception
+     */
+    function createAndGetData(array $payload, array $relationships = []) : ?Model
+    {
+        return $this->run(function () use ($payload, $relationships) {
+            $newModel = $this->create($payload);
+
+            return $this->findById($newModel->id, $relationships);
+        }, __FUNCTION__);
+    }
 }

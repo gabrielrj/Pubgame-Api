@@ -11,7 +11,6 @@ use App\Models\Game\Transaction;
 use App\Services\Traits\ServiceCallableIntercept;
 use App\Services\TransactionService;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
 class BoxPurchaseInternalTransactionStrategy extends TransactionService
@@ -21,7 +20,7 @@ class BoxPurchaseInternalTransactionStrategy extends TransactionService
     /**
      * @param Player $player
      * @param array|null $payload ['coin_types_id', 'box_price']
-     * @param Model ...$items
+     * @param ProductTransactionable ...$items
      * @return Transaction
      * @throws Exception
      */

@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\MessageBag;
 use JetBrains\PhpStorm\ArrayShape;
 
-class ApiResponseException
+class ApiResponseExceptionController
 {
 
     #[ArrayShape(['success' => "false", 'action_name' => "string", 'validation_errors' => "mixed", 'error' => "mixed", 'http_code' => "mixed"])]

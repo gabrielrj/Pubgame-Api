@@ -2,6 +2,7 @@
 
 namespace App\Models\Game\Settings;
 
+use App\EnumTypes\Accessory\AccessoryEdition;
 use Database\Factories\AccessoryFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,7 +34,9 @@ class Accessory extends Model
         'skills_id',
         'available_for_sale',
         'is_unlimited',
-        'is_free'
+        'is_free',
+        'created_at',
+        'updated_at',
     ];
 
     protected $casts = [
@@ -55,4 +58,25 @@ class Accessory extends Model
     {
         return $this->belongsTo(Skill::class, 'skills_id');
     }
+
+    public function rarity(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(AccessoryRarityType::class, 'rarity_id');
+    }
+
+    public function type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(AccessoryType::class, 'type_id');
+    }
+
+    //Attributes
+    /*public function getEditionAttribute(): string
+    {
+        return match ($this->edition) {
+            AccessoryEdition::DefaultEdition => 'Default',
+            AccessoryEdition::SpecialEdition => 'Special',
+            default => 'Undefined',
+        };
+    }*/
+
 }
