@@ -23,7 +23,11 @@ class AccessoryFactory extends Factory
      */
     public function definition(): array
     {
-        $edition = array_rand([AccessoryEdition::SpecialEdition, AccessoryEdition::DefaultEdition]);
+        $editions = [AccessoryEdition::SpecialEdition, AccessoryEdition::DefaultEdition];
+        $modifiers = ['+1', '-5', '+10', '-4', '8', '+4', '-1', '-10', '3'];
+        $edition = $editions[array_rand($editions)];
+        $modifier = $modifiers[array_rand($modifiers)];
+        $isFree = $edition == AccessoryEdition::SpecialEdition ? false : random_int(0, 1);
 
         return [
             'type_id' => AccessoryType::query()->inRandomOrder()->first()->id,
@@ -34,8 +38,8 @@ class AccessoryFactory extends Factory
             'available_quantity' => $edition == AccessoryEdition::DefaultEdition ? 100 : null,
             'is_unlimited' => $edition == AccessoryEdition::DefaultEdition,
             'skills_id' => Skill::query()->inRandomOrder()->first()->id,
-            'modifier' => array_rand(['+1', '-5', '+10', '-4', '8', '+4', '-1', '-10', '3']),
-            'is_free' => random_int(0, 1),
+            'modifier' => $modifier,
+            'is_free' => $isFree,
             'edition' => $edition,
         ];
     }
