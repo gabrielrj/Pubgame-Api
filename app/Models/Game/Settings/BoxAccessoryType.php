@@ -25,7 +25,17 @@ class BoxAccessoryType extends Model
         'quantity_for_sale',
     ];
 
-    protected $hidden = ['contains_avatar', 'price_coin_id', 'probability_accessory_rarity'];
+    protected $hidden = [
+        'contains_avatar',
+        'price_coin_id',
+        'probability_accessory_rarity',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'quantity_of_raffle_accessories',
+        'accessory_edition',
+        'cost_type',
+    ];
 
     protected $casts = [
         'probability_accessory_rarity' => 'array',
@@ -35,7 +45,7 @@ class BoxAccessoryType extends Model
     ];
 
     //Relationships//
-    public function coin(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function coin_type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(CoinType::class, 'price_coin_id');
     }

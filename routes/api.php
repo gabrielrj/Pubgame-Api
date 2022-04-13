@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Game\Player\Auth\AuthenticationController as PlayerAuthenticationController;
+use App\Http\Controllers\Api\Game\Player\Auth\RegisterController as PlayerRegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-use App\Http\Controllers\Api\Game\Player\Auth\AuthenticationController as PlayerAuthenticationController;
-use App\Http\Controllers\Api\Game\Player\Auth\RegisterController as PlayerRegisterController;
 
 Route::get('/isconnected', function () {
     return response()->json(['success' => true, 'isconnected' => true]);
@@ -39,6 +37,12 @@ Route::prefix('game')->group(function () {
 
     });
 
+    Route::prefix('shop')->group(function() {
+        Route::prefix('boxes')->group(function () {
+            Route::get('list', [\App\Http\Controllers\Api\Game\Player\Shop\BoxesController::class, 'getBoxesAvailableForSale']);
+        });
+    });
+
 
 });
 
@@ -56,13 +60,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('players')->group(function () {
             Route::get('/', [\App\Http\Controllers\Api\Game\Player\PlayerController::class, 'index']);
 
-            Route::prefix('acquisition-of-box')->group(function () {
-                Route::post('free', [\App\Http\Controllers\Api\Game\Player\AcquisitionOfBoxController::class, 'freeBoxAcquisition']);
+            Route::prefix('shop')->group(function() {
+                Route::prefix('acquisition-of-box')->group(function () {
+                    Route::post('free', [\App\Http\Controllers\Api\Game\Player\Shop\AcquisitionOfBoxController::class, 'freeBoxAcquisition']);
 
-                Route::prefix('purchase')->group(function () {
-                    Route::post('internal', [\App\Http\Controllers\Api\Game\Player\AcquisitionOfBoxController::class, 'internalBoxPurchase']);
+                    Route::prefix('purchase')->group(function () {
+                        Route::post('internal', [\App\Http\Controllers\Api\Game\Player\Shop\AcquisitionOfBoxController::class, 'internalBoxPurchase']);
 
-                    //Route::post('external');
+                        //Route::post('external');
+                    });
                 });
             });
         });

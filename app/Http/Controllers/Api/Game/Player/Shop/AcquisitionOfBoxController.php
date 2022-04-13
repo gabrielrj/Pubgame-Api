@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Game\Player;
+namespace App\Http\Controllers\Api\Game\Player\Shop;
 
 use App\Http\Controllers\Api\Game\Traits\GameControllerCallableIntercept;
 use App\Http\Controllers\Controller;
@@ -11,7 +11,8 @@ use App\Services\Repositories\PlayerRepositoryInterface;
 use App\Services\Strategies\AcquisitionOfBox\AcquisitionOfBoxStrategy;
 use App\Services\Strategies\AcquisitionOfBox\FreeBoxPurchaseStrategy;
 use App\Services\Strategies\AcquisitionOfBox\InternalAcquisitionOfBox;
-use Illuminate\Http\Request;
+use function app;
+use function auth;
 
 class AcquisitionOfBoxController extends Controller
 {
