@@ -27,7 +27,7 @@ class BoxesListResource extends JsonResource
             'description' => $this->description,
             'is_free' => $this->cost_type == BoxCostType::Free,
             'available_for_sale' => $this->available_for_sale,
-            'quantity_for_sale' => $this->quantity_for_sale <= 0 ?? $this->quantity_for_sale,
+            'quantity_for_sale' => $this->quantity_for_sale <= 0 ? 0 : $this->quantity_for_sale,
             'accessory_edition' => $this->accessory_edition == AccessoryEdition::DefaultEdition ? 'Default' : 'Special',
             'price' => $this->price,
             'price_coin' => $this->coin_type != null ? ($this->coin_type?->acronym . ' | ' . $this->coin_type?->name) : null
