@@ -111,4 +111,9 @@ class BaseRepository implements RepositoryInterface
             return $this->findById($newModel->id, $relationships);
         }, __FUNCTION__);
     }
+
+    function findByUuid(string $uuid, array $relationships = []): ?Model
+    {
+        // TODO: Implement findByUuid() method.
+    }
 }

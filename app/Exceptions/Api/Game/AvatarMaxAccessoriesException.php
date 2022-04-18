@@ -8,5 +8,11 @@ class AvatarMaxAccessoriesException extends Exception
 {
     protected $code = 422;
 
-    protected $message = 'The maximum number of accessories for this table has been reached.';
+    /**
+     * @param string $message
+     */
+    public function setMessage(string $message): void
+    {
+        $this->message = $message ?? __('exceptions.AvatarMaxAccessoriesException');
+    }
 }

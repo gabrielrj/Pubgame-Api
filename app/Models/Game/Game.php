@@ -18,6 +18,7 @@ class Game extends ProductTransactionable
         'game_types_id',
         'players_id',
         'avatars_id',
+        'avatar_level',
         'pub_tables_id',
         'number_of_avatar_accessories',
         'pub_coin_fee_to_play',
@@ -26,7 +27,7 @@ class Game extends ProductTransactionable
         'game_status',
         'claim_status',
         'claim_fee_percentage',
-        'pub_coin_claimed'
+        'pub_coin_claimed',
     ];
 
     protected $hidden = [

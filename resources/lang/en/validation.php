@@ -130,6 +130,7 @@ return [
     'url' => 'The :attribute must be a valid URL.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -144,6 +145,14 @@ return [
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
+        ],
+        'avTiD' => [
+            'required' => 'The avatar is required.',
+            'exists' => 'The avatar not exists.',
+        ],
+        'pubTiD' => [
+            'required' => 'The pub table is required.',
+            'exists' => 'The pub table not exists.',
         ],
     ],
 

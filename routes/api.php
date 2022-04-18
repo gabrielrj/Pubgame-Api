@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Game\Player\Auth\AuthenticationController as PlayerAuthenticationController;
 use App\Http\Controllers\Api\Game\Player\Auth\RegisterController as PlayerRegisterController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -69,6 +70,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
                         //Route::post('external');
                     });
+                });
+            });
+
+            Route::prefix('games')->group(function () {
+                Route::prefix('beer-poing')->group(function () {
+                    Route::post('start', [\App\Http\Controllers\Api\Game\Player\Games\BeerPoingController::class, 'startNewBeerPoingGame']);
                 });
             });
         });

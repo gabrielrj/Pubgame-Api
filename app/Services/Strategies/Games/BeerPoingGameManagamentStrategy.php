@@ -19,6 +19,7 @@ use App\Services\Strategies\Transactions\GameFeeTransactionStrategy;
 use App\Services\Strategies\Transactions\RegisterTransactionStrategy;
 use App\Services\Traits\ServiceCallableIntercept;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -66,6 +67,7 @@ class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
                     'game_types_id' => $gameTypeId,
                     'players_id' => $player->id,
                     'avatars_id' => $avatar->id,
+                    'avatar_level' => $avatar->level,
                     'pub_tables_id' => $table->id,
                     'number_of_avatar_accessories' => $accessoriesCount,
                     'pub_coin_fee_to_play' => $tableFee,
@@ -91,10 +93,18 @@ class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
     /**
      * @throws Exception
      */
-    function getLastGameStarted(Player $player, Avatar $avatar): ?Game
+    function getLastGameStarted(Player $player, ?Avatar $avatar): ?Game
     {
         return $this->run(function () use ($player, $avatar){
-            throw new FeatureNotImplementedException();
+            $query = $this->gameRepository->newQuery()
+                ->where('players_id', '=', $player->id);
+
+            if($avatar)
+                $query->where('avatars_id', '=', $avatar->id);
+
+            return $query->where('game_status', '=', GameStatus::InProgress)
+                ->latest('created_at')
+                ->first();
         }, __FUNCTION__);
     }
 
@@ -104,6 +114,16 @@ class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
     function endGame(Player $player, Game $game): bool
     {
         return $this->run(function () use ($player, $game){
+            throw new FeatureNotImplementedException();
+        }, __FUNCTION__);
+    }
+
+    /**
+     * @throws Exception
+     */
+    function getHistoryGamesByDate(Player $player, string $date): Collection
+    {
+        return $this->run(function () use ($player, $date){
             throw new FeatureNotImplementedException();
         }, __FUNCTION__);
     }

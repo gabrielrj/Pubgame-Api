@@ -10,6 +10,8 @@ interface RepositoryInterface
 {
     function newQuery() : Builder;
 
+    function findByUuid(string $uuid, array $relationships = []) : ?Model;
+
     function findById(int $id, array $relationships = []) : ?Model;
 
     function getAll(array $relationships = []) : Collection;
