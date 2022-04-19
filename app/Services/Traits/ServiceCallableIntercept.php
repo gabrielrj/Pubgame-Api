@@ -2,6 +2,8 @@
 
 namespace App\Services\Traits;
 
+use App\Exceptions\Api\CustomException;
+use App\Exceptions\Api\UnexpectedErrorException;
 use App\Services\ErrorTrappingServiceInterface;
 use Exception;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -30,6 +32,9 @@ trait ServiceCallableIntercept
             $errorLogTrappingService = App::make(ErrorTrappingServiceInterface::class);
 
             $errorLogTrappingService->logNewErrorException($this->file, $fnName, get_class($exception), $exception->getMessage(), $exception->getTraceAsString(), $this->userLogged);
+
+            /*if(!($exception instanceof CustomException))
+                throw new UnexpectedErrorException();*/
 
             throw $exception;
         }

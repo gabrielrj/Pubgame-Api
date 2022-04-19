@@ -2,11 +2,9 @@
 
 namespace App\Exceptions\Api\Player\AcquisitionOfBox;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class PlayerAlreadyHasAvatarLimitException extends Exception
+class PlayerAlreadyHasAvatarLimitException extends CustomException
 {
-    protected $code = 422;
-
-    protected $message = "The player has already reached the maximum avatar limit.";
+    protected string $key = __CLASS__;
 }

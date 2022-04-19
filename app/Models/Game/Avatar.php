@@ -20,6 +20,7 @@ class Avatar extends ProductTransactionable
         'cost_type',
         'box_id',
         'color',
+        'last_game_date',
     ];
 
     protected $hidden = [
@@ -28,6 +29,13 @@ class Avatar extends ProductTransactionable
         'players_id',
         'created_at',
         'updated_at',
+        'last_game_date',
+    ];
+
+    protected $dates = [
+        'last_game_date',
+        'created_at',
+        'updated_at'
     ];
 
     protected $appends = ['level'];

@@ -2,11 +2,11 @@
 
 namespace App\Exceptions\Api\User\AuthAndAccess;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class UnauthorizedUserAccessException extends Exception
+class UnauthorizedUserAccessException extends CustomException
 {
-    protected $code = 401;
+    protected string $key = __CLASS__;
 
-    protected $message = 'Unauthorized user access.';
+    protected $code = 401;
 }

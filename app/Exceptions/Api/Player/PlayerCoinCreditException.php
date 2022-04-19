@@ -2,11 +2,11 @@
 
 namespace App\Exceptions\Api\Player;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class PlayerCoinCreditException extends Exception
+class PlayerCoinCreditException extends CustomException
 {
-    protected $code = 500;
+    protected string $key = PlayerCoinCreditException::class;
 
-    protected $message = 'An unexpected error occurred when trying to credit the selected coins to the player.';
+    protected $code = 500;
 }

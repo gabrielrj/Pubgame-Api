@@ -2,9 +2,9 @@
 
 namespace App\Exceptions\Api\Player\AuthAndAccess;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class PlayerEmailAlreadyRegisteredException extends Exception
+class PlayerEmailAlreadyRegisteredException extends CustomException
 {
-    protected $message = 'There is already a player with that email in the database.';
+    protected string $key = __CLASS__;
 }

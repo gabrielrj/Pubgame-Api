@@ -44,7 +44,7 @@ class CreateGamesTable extends Migration
                 ->default(\App\EnumTypes\Game\GameStatus::InProgress)
                 ->index();
 
-            $table->string('claim_status', 15)
+            $table->string('claim_status', 25)
                 ->default(\App\EnumTypes\Game\ClaimStatus::AwaitingClaim)
                 ->index();
 

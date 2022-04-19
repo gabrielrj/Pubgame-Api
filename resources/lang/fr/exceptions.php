@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'AvatarMaxAccessoriesException' => 'Le nombre maximum d\"accessoires pour cette table a été atteint.',
+    'AvatarMaxAccessoriesForTableException' => 'Le nombre maximum d\"accessoires pour cette table a été atteint.',
     'BoxUnavailableForSaleException' => 'Cette box est actuellement indisponible à la vente.',
     'CrateChosenByPlayerIsNotFreeException' => 'La case choisie par le joueur n\"est pas libre.',
     'InvalidBoxException' => 'La box choisie par le joueur ne peut pas être achetée par ce moyen d\"acquisition, car il s\"agit d\"une box gratuite.',
@@ -18,4 +18,6 @@ return [
     'UnauthorizedUserAccessException' => 'Accès utilisateur non autorisé.',
     'FeatureNotImplementedException' => 'Cette fonctionnalité n\"a pas encore été implémentée.',
     'UnexpectedErrorException' => 'Une erreur inattendue s\"est produite lors de la tentative d\"exécution de l\"opération.',
+    'AvatarGameTimeLimitException' => 'Votre avatar est ivre et a la gueule de bois, il ne récupérera qu"après 24 heures de repos.',
+    'AvatarMaxAccessoriesException' => 'Votre avatar a atteint le nombre maximum d"accessoires autorisés.',
 ];

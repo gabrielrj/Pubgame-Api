@@ -19,7 +19,8 @@ class AccessoryOfPlayer extends ProductTransactionable
         'players_id',
         'avatars_id',
         'engagement_date_in_avatar',
-        'is_pending_payment'
+        'is_pending_payment',
+        'last_game_date',
     ];
 
     protected $hidden = [
@@ -29,12 +30,14 @@ class AccessoryOfPlayer extends ProductTransactionable
         'avatars_id',
         'created_at',
         'updated_at',
+        'last_game_date',
     ];
 
     protected $dates = [
         'created_at',
         'updated_at',
-        'engagement_date_in_avatar'
+        'engagement_date_in_avatar',
+        'last_game_date',
     ];
 
     protected $casts = [

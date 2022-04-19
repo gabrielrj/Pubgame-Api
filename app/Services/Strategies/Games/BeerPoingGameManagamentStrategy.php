@@ -6,31 +6,36 @@ use App\EnumTypes\Coin\CoinTypes;
 use App\EnumTypes\Game\ClaimStatus;
 use App\EnumTypes\Game\GameStatus;
 use App\Exceptions\Api\FeatureNotImplementedException;
-use App\Exceptions\Api\Game\AvatarMaxAccessoriesException;
+use App\Exceptions\Api\Game\AvatarGameTimeLimitException;
+use App\Exceptions\Api\Game\AvatarMaxAccessoriesForTableException;
+use App\Exceptions\Api\Game\NoGameStartedException;
 use App\Exceptions\Api\Player\Avatar\AvatarIsNotThePlayerException;
 use App\Models\Game\Avatar;
 use App\Models\Game\Game;
 use App\Models\Game\Player;
 use App\Models\Game\Settings\PubTable;
-use App\Services\GameManagementServiceInterface;
+use App\Services\BaseGameManagamentService;
+use App\Services\Repositories\AvatarRepositoryInterface;
 use App\Services\Repositories\GameRepositoryInterface;
 use App\Services\Repositories\GameTypeRepositoryInterface;
 use App\Services\Strategies\Transactions\GameFeeTransactionStrategy;
 use App\Services\Strategies\Transactions\RegisterTransactionStrategy;
 use App\Services\Traits\ServiceCallableIntercept;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
-class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
+class BeerPoingGameManagamentStrategy extends BaseGameManagamentService
 {
     use ServiceCallableIntercept;
 
     protected GameRepositoryInterface $gameRepository;
     protected GameTypeRepositoryInterface $gameTypeRepository;
 
-    public function __construct(GameRepositoryInterface $gameRepository, GameTypeRepositoryInterface $gameTypeRepository)
+    public function __construct(GameRepositoryInterface $gameRepository,
+                                GameTypeRepositoryInterface $gameTypeRepository)
     {
         $this->gameRepository = $gameRepository;
         $this->gameTypeRepository = $gameTypeRepository;
@@ -44,9 +49,11 @@ class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
         return $this->run(function () use ($player, $avatar, $table){
             throw_if($avatar->players_id != $player->id, AvatarIsNotThePlayerException::class);
 
+            throw_if(($avatar->last_game_date != null && now()->diffInHours(Carbon::createFromFormat('Y-m-d H:i:s', $avatar->last_game_date)) < 24), AvatarGameTimeLimitException::class);
+
             $tableSettingForAvatar = (object)Arr::where($table->beer_poing_settings, function ($value) use($avatar){
                 return $value['avatar_level'] == $avatar->level;
-            });
+            })[0];
 
             $tableFee = (float)$tableSettingForAvatar->table_fee;
 
@@ -54,7 +61,7 @@ class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
 
             $maxAccessoriesTable = (int)$tableSettingForAvatar->max_accessories_count;
 
-            throw_if($accessoriesCount > $maxAccessoriesTable, new AvatarMaxAccessoriesException("The maximum amount of accessories per avatar for the selected table is $maxAccessoriesTable"));
+            throw_if($accessoriesCount > $maxAccessoriesTable, AvatarMaxAccessoriesForTableException::class);
 
             $transactionService = (new RegisterTransactionStrategy(app()->make(GameFeeTransactionStrategy::class)));
 
@@ -75,9 +82,13 @@ class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
                     'claim_status' => ClaimStatus::PendingCompletionGame,
                 ]);
 
+                parent::changeAvatarLastGameDateTime($avatar, $newGame->created_at);
+
+                parent::changeAccessoriesOfAvatarLastGameDateTime($avatar->accessories()->get(), $newGame->created_at);
+
                 //$newGame?->transactions()->save($gameFeeTransaction);
 
-                $gameFeeTransaction = $transactionService->createNewTransaction(
+                $transactionService->createNewTransaction(
                     $player,
                     ['coin_amount' => $tableFee, 'coin_type' => CoinTypes::PubBeerCoin],
                     $newGame
@@ -102,19 +113,21 @@ class BeerPoingGameManagamentStrategy implements GameManagementServiceInterface
             if($avatar)
                 $query->where('avatars_id', '=', $avatar->id);
 
-            return $query->where('game_status', '=', GameStatus::InProgress)
-                ->latest('created_at')
-                ->first();
+            return $query->latest('created_at')->first();
         }, __FUNCTION__);
     }
 
     /**
      * @throws Exception
      */
-    function endGame(Player $player, Game $game): bool
+    function endGame(Player $player, Game $game, ?array $payload = []): bool
     {
-        return $this->run(function () use ($player, $game){
-            throw new FeatureNotImplementedException();
+        return $this->run(function () use ($player, $game, $payload){
+            throw_if($game->game_status != GameStatus::InProgress, NoGameStartedException::class);
+
+            $totalNumberOfCorrectBalls = (int)$payload['total_balls'];
+
+
         }, __FUNCTION__);
     }
 

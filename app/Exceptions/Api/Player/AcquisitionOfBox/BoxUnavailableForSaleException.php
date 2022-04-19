@@ -2,11 +2,9 @@
 
 namespace App\Exceptions\Api\Player\AcquisitionOfBox;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class BoxUnavailableForSaleException extends Exception
+class BoxUnavailableForSaleException extends CustomException
 {
-    protected $code = 422;
-
-    protected $message = "This box is currently unavailable for sale.";
+    protected string $key = BoxUnavailableForSaleException::class;
 }

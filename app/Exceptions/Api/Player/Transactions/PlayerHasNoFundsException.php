@@ -2,11 +2,9 @@
 
 namespace App\Exceptions\Api\Player\Transactions;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class PlayerHasNoFundsException extends Exception
+class PlayerHasNoFundsException extends CustomException
 {
-    protected $code = 422;
-
-    protected $message = 'Player does not have sufficient funds in the chosen currency to carry out this transaction.';
+    protected string $key = __CLASS__;
 }

@@ -6,7 +6,7 @@ use Exception;
 
 class UnauthorizedPlayerLoginException extends Exception
 {
-    protected $code = 401;
+    protected string $key = __CLASS__;
 
-    protected $message = 'Unauthorized player login.';
+    protected $code = 401;
 }

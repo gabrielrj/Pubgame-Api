@@ -2,11 +2,11 @@
 
 namespace App\Exceptions\Api\Player\AuthAndAccess;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class UnauthorizedPlayerAccessException extends Exception
+class UnauthorizedPlayerAccessException extends CustomException
 {
-    protected $code = 401;
+    protected string $key = __CLASS__;
 
-    protected $message = 'Unauthorized player access.';
+    protected $code = 401;
 }

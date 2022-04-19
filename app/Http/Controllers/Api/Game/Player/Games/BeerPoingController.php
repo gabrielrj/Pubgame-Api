@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Game\Player\Games;
 
+use App\Exceptions\Api\UnexpectedErrorException;
 use App\Http\Controllers\Api\Game\Traits\GameControllerCallableIntercept;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Game\BeerPoingGameRequest;
@@ -12,6 +13,7 @@ use App\Services\Repositories\PubTableRepositoryInterface;
 use App\Services\Strategies\Games\BeerPoingGameManagamentStrategy;
 use App\Services\Strategies\Games\GameManagementStrategy;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 
 class BeerPoingController extends Controller
@@ -47,7 +49,31 @@ class BeerPoingController extends Controller
             $pubTable = $this->pubTableRepository->findById($request->get('pubTiD'));
 
             return [
-                $this->gameManagementService->startNewGame($player, $avatar, $pubTable)
+                'gameHasStarted' => $this->gameManagementService->startNewGame($player, $avatar, $pubTable)
+            ];
+        });
+    }
+
+    public function endGame(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $this->actionName = 'end last game started';
+
+        return $this->run(function () use ($request) {
+            $rt = $request->get('rt');
+
+            $totalNumberOfCorrectBalls = Str::substr($rt, -2);
+
+            if($totalNumberOfCorrectBalls > 10 || $totalNumberOfCorrectBalls < 0)
+                throw new UnexpectedErrorException();
+
+            $player = $this->playerRepository->findById($request->user()->id);
+
+            $lastGameStarted = $this->gameManagementService->getLastGameStarted($player);
+
+            $gameFinished = $this->gameManagementService->endGame($player, $lastGameStarted, ['total_balls' => $totalNumberOfCorrectBalls]);
+
+            return [
+                'gameHasFinished' => $gameFinished
             ];
         });
     }

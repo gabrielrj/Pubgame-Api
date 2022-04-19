@@ -2,11 +2,9 @@
 
 namespace App\Exceptions\Api\Player\AcquisitionOfBox;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class PlayerHasBoxOrFreeAvatarException extends Exception
+class PlayerHasBoxOrFreeAvatarException extends CustomException
 {
-    protected $message = 'Player already has a box or a free avatar and therefore cannot purchase another one.';
-
-    protected $code = 422;
+    protected string $key = PlayerHasBoxOrFreeAvatarException::class;
 }

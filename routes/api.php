@@ -76,6 +76,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::prefix('games')->group(function () {
                 Route::prefix('beer-poing')->group(function () {
                     Route::post('start', [\App\Http\Controllers\Api\Game\Player\Games\BeerPoingController::class, 'startNewBeerPoingGame']);
+                    Route::post('finish', [\App\Http\Controllers\Api\Game\Player\Games\BeerPoingController::class, 'endGame']);
                 });
             });
         });

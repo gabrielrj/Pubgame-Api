@@ -2,11 +2,9 @@
 
 namespace App\Exceptions\Api\Player\AcquisitionOfBox;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class CrateChosenByPlayerIsNotFreeException extends Exception
+class CrateChosenByPlayerIsNotFreeException extends CustomException
 {
-    protected $code = 422;
-
-    protected $message = 'The box chosen by the player is not free.';
+    protected string $key = CrateChosenByPlayerIsNotFreeException::class;
 }

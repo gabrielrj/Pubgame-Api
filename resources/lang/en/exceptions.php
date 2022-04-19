@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'AvatarMaxAccessoriesException' => 'The maximum number of accessories for this table has been reached.',
+    'AvatarMaxAccessoriesForTableException' => 'The maximum number of accessories for this table has been reached.',
     'BoxUnavailableForSaleException' => 'This box is currently unavailable for sale.',
     'CrateChosenByPlayerIsNotFreeException' => 'The box chosen by the player is not free.',
     'InvalidBoxException' => 'The box chosen by the player cannot be purchased by this means of acquisition, as it is a free box.',
@@ -30,5 +30,6 @@ return [
     'UnauthorizedUserAccessException' => 'Unauthorized user access.',
     'FeatureNotImplementedException' => 'This feature has not yet been implemented.',
     'UnexpectedErrorException' => 'An unexpected error occurred while trying to perform the operation.',
-
+    'AvatarGameTimeLimitException' => 'Your avatar is drunk and hung over, it will only recover after 24 hours of rest.',
+    'AvatarMaxAccessoriesException' => 'Your avatar has reached the maximum amount of accessories allowed.',
 ];

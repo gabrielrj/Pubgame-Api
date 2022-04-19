@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'AvatarMaxAccessoriesException' => 'Se ha alcanzado el número máximo de accesorios para esta tabla.',
+    'AvatarMaxAccessoriesForTableException' => 'Se ha alcanzado el número máximo de accesorios para esta tabla.',
     'BoxUnavailableForSaleException' => 'Esta caja no está disponible para la venta actualmente.',
     'CrateChosenByPlayerIsNotFreeException' => 'La caja elegida por el jugador no está libre.',
     'InvalidBoxException' => 'La caja elegida por el jugador no se puede comprar por este medio de adquisición, ya que es una caja gratuita.',
@@ -18,4 +18,6 @@ return [
     'UnauthorizedUserAccessException' => 'Acceso de usuario no autorizado.',
     'FeatureNotImplementedException' => 'Esta característica aún no ha sido implementada.',
     'UnexpectedErrorException' => 'Ocurrió un error inesperado al intentar realizar la operación.',
+    'AvatarGameTimeLimitException' => 'Tu avatar está borracho y con resaca, solo se recuperará después de 24 horas de descanso.',
+    'AvatarMaxAccessoriesException' => 'Tu avatar ha alcanzado la cantidad máxima de accesorios permitidos.',
 ];

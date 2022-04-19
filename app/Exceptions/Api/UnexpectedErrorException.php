@@ -2,11 +2,9 @@
 
 namespace App\Exceptions\Api;
 
-use Exception;
-
-class UnexpectedErrorException extends Exception
+class UnexpectedErrorException extends CustomException
 {
-    protected $code = 500;
+    protected string $key = __CLASS__;
 
-    protected $message = "An unexpected error occurred while trying to perform the operation.";
+    protected $code = 500;
 }
