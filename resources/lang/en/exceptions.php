@@ -32,4 +32,5 @@ return [
     'UnexpectedErrorException' => 'An unexpected error occurred while trying to perform the operation.',
     'AvatarGameTimeLimitException' => 'Your avatar is drunk and hung over, it will only recover after 24 hours of rest.',
     'AvatarMaxAccessoriesException' => 'Your avatar has reached the maximum amount of accessories allowed.',
+    'NoGameStartedException' => 'The last game started by the player is already finished.',
 ];

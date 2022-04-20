@@ -2,6 +2,8 @@
 
 namespace App\Models\Game;
 
+use App\EnumTypes\Game\ClaimStatus;
+use App\EnumTypes\Game\GameStatus;
 use App\Models\Game\Settings\GameType;
 use App\Models\Game\Settings\PubTable;
 use App\Models\Traits\HasUuidKey;
@@ -35,6 +37,8 @@ class Game extends ProductTransactionable
         'players_id',
         'avatars_id',
         'pub_tables_id',
+        'game_status',
+        'claim_status',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -45,6 +49,31 @@ class Game extends ProductTransactionable
         'updated_at',
         'deleted_at',
     ];
+
+    protected $appends = [
+        'status_game'
+    ];
+
+    public function getStatusGameAttribute(): string
+    {
+        return match ($this->attributes['game_status']){
+            GameStatus::InProgress => 'In progress.',
+            GameStatus::Finished => 'Finished.',
+            GameStatus::Canceled => 'Canceled.',
+            default => 'Undefined.',
+        };
+    }
+
+    public function getStatusClaimAttribute(): string
+    {
+        return match ($this->attributes['claim_status']){
+            ClaimStatus::PendingCompletionGame => 'Pending game completion.',
+            ClaimStatus::AwaitingClaim => 'Awaiting claim.',
+            ClaimStatus::CanceledClaim => 'Claim canceled.',
+            ClaimStatus::Claimed => 'Claimed.',
+            default => 'Undefined.',
+        };
+    }
 
     //Relationships//
     public function type(): \Illuminate\Database\Eloquent\Relations\BelongsTo

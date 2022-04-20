@@ -78,6 +78,8 @@ Route::middleware('auth:sanctum')->group(function () {
                     Route::post('start', [\App\Http\Controllers\Api\Game\Player\Games\BeerPoingController::class, 'startNewBeerPoingGame']);
                     Route::post('finish', [\App\Http\Controllers\Api\Game\Player\Games\BeerPoingController::class, 'endGame']);
                 });
+
+                Route::get('/get/history', [\App\Http\Controllers\Api\Game\Player\Games\BaseGameManagamentController::class, 'getHistoryOfGames']);
             });
         });
 

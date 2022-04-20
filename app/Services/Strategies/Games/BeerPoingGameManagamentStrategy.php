@@ -5,7 +5,6 @@ namespace App\Services\Strategies\Games;
 use App\EnumTypes\Coin\CoinTypes;
 use App\EnumTypes\Game\ClaimStatus;
 use App\EnumTypes\Game\GameStatus;
-use App\Exceptions\Api\FeatureNotImplementedException;
 use App\Exceptions\Api\Game\AvatarGameTimeLimitException;
 use App\Exceptions\Api\Game\AvatarMaxAccessoriesForTableException;
 use App\Exceptions\Api\Game\NoGameStartedException;
@@ -15,7 +14,6 @@ use App\Models\Game\Game;
 use App\Models\Game\Player;
 use App\Models\Game\Settings\PubTable;
 use App\Services\BaseGameManagamentService;
-use App\Services\Repositories\AvatarRepositoryInterface;
 use App\Services\Repositories\GameRepositoryInterface;
 use App\Services\Repositories\GameTypeRepositoryInterface;
 use App\Services\Strategies\Transactions\GameFeeTransactionStrategy;
@@ -23,7 +21,6 @@ use App\Services\Strategies\Transactions\RegisterTransactionStrategy;
 use App\Services\Traits\ServiceCallableIntercept;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
@@ -63,6 +60,10 @@ class BeerPoingGameManagamentStrategy extends BaseGameManagamentService
 
             throw_if($accessoriesCount > $maxAccessoriesTable, AvatarMaxAccessoriesForTableException::class);
 
+            try {
+                parent::cancelsGamesThatWereStartedButNotCompleted($player);
+            }catch (Exception $exception){}
+
             $transactionService = (new RegisterTransactionStrategy(app()->make(GameFeeTransactionStrategy::class)));
 
             $gameTypeId = $this->gameTypeRepository->newQuery()->whereName('Beer Poing')->first()->id;
@@ -86,8 +87,6 @@ class BeerPoingGameManagamentStrategy extends BaseGameManagamentService
 
                 parent::changeAccessoriesOfAvatarLastGameDateTime($avatar->accessories()->get(), $newGame->created_at);
 
-                //$newGame?->transactions()->save($gameFeeTransaction);
-
                 $transactionService->createNewTransaction(
                     $player,
                     ['coin_amount' => $tableFee, 'coin_type' => CoinTypes::PubBeerCoin],
@@ -104,7 +103,7 @@ class BeerPoingGameManagamentStrategy extends BaseGameManagamentService
     /**
      * @throws Exception
      */
-    function getLastGameStarted(Player $player, ?Avatar $avatar): ?Game
+    function getLastGameStarted(Player $player, Avatar $avatar = null): ?Game
     {
         return $this->run(function () use ($player, $avatar){
             $query = $this->gameRepository->newQuery()
@@ -127,17 +126,26 @@ class BeerPoingGameManagamentStrategy extends BaseGameManagamentService
 
             $totalNumberOfCorrectBalls = (int)$payload['total_balls'];
 
+            $tableSettingForAvatar = (object)Arr::where($game->pub_table->beer_poing_settings, function ($value) use($game){
+                return $value['avatar_level'] == $game->avatar_level;
+            })[0];
+
+            $totalPercentualModifier = $tableSettingForAvatar->modifier_percentage_per_accessory * $game->number_of_avatar_accessories;
+
+            $pubCoinEarned = ($tableSettingForAvatar->value_per_ball * $totalNumberOfCorrectBalls);
+
+            if($totalPercentualModifier > 0)
+                $pubCoinEarned += (($pubCoinEarned * $totalPercentualModifier) / 100);
+
+            return $this->gameRepository->update($game, [
+                'number_of_hits' => $totalNumberOfCorrectBalls,
+                'game_status' => GameStatus::Finished,
+                'claim_status' => ClaimStatus::AwaitingClaim,
+                'pub_coin_earned' => $pubCoinEarned
+            ]);
 
         }, __FUNCTION__);
     }
 
-    /**
-     * @throws Exception
-     */
-    function getHistoryGamesByDate(Player $player, string $date): Collection
-    {
-        return $this->run(function () use ($player, $date){
-            throw new FeatureNotImplementedException();
-        }, __FUNCTION__);
-    }
+
 }

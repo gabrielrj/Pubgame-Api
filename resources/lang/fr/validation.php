@@ -140,5 +140,8 @@ return [
             'required' => 'La table de bar est un incontournable.',
             'exists' => 'La table pub n"existe pas.',
         ],
+        'dateGame' => [
+            'required' => 'La date du match est obligatoire.'
+        ]
     ],
 ];

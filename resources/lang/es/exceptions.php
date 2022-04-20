@@ -8,7 +8,7 @@ return [
     'PlayerAlreadyHasAvatarLimitException' => 'El jugador ya alcanzó el límite máximo de avatares.',
     'PlayerHasBoxOrFreeAvatarException' => 'El jugador ya tiene una caja o un avatar gratuito y por lo tanto no puede comprar otro.',
     'PlayerEmailAlreadyRegisteredException' => 'Ya hay un jugador con ese correo electrónico en la base de datos.',
-    'Excepción de correo electrónico y contraseña del jugador' => '',
+    'PlayerEmailAndPasswordException' => '',
     'UnauthorizedPlayerAccessException' => 'Acceso de jugador no autorizado.',
     'UnauthorizedPlayerLoginException' => 'Inicio de sesión de jugador no autorizado.',
     'AvatarIsNotThePlayerException' => 'El avatar seleccionado no pertenece al jugador que inició sesión.',
@@ -20,4 +20,5 @@ return [
     'UnexpectedErrorException' => 'Ocurrió un error inesperado al intentar realizar la operación.',
     'AvatarGameTimeLimitException' => 'Tu avatar está borracho y con resaca, solo se recuperará después de 24 horas de descanso.',
     'AvatarMaxAccessoriesException' => 'Tu avatar ha alcanzado la cantidad máxima de accesorios permitidos.',
+    'NoGameStartedException' => 'El último juego iniciado por el jugador ya ha terminado.',
 ];

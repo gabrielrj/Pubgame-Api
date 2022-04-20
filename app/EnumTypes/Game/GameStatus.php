@@ -7,4 +7,6 @@ class GameStatus
     const InProgress = 'in_progress';
 
     const Finished = 'finished';
+
+    const Canceled = 'canceled';
 }

@@ -6,6 +6,8 @@ use App\Exceptions\Api\UnexpectedErrorException;
 use App\Http\Controllers\Api\Game\Traits\GameControllerCallableIntercept;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Game\BeerPoingGameRequest;
+use App\Http\Requests\Api\Game\HistoryGameRequest;
+use App\Http\Resources\Api\Game\Games\History\GameHistoryResource;
 use App\Services\GameManagementServiceInterface;
 use App\Services\Repositories\AvatarRepositoryInterface;
 use App\Services\Repositories\PlayerRepositoryInterface;
@@ -77,4 +79,6 @@ class BeerPoingController extends Controller
             ];
         });
     }
+
+
 }

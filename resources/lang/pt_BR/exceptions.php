@@ -20,4 +20,5 @@ return [
     'UnexpectedErrorException' => 'Ocorreu um erro inesperado ao tentar realizar a operação.',
     'AvatarGameTimeLimitException' => 'Seu avatar está bêbado e de ressaca, ele só estará recuperado depois de 24 horas de descanso.',
     'AvatarMaxAccessoriesException' => 'Seu avatar atingiu a quantidade máxima de acessórios permitidos.',
+    'NoGameStartedException' => 'O último jogo iniciado pelo jogador já encontra-se finalizado.',
 ];

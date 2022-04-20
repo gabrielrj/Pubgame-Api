@@ -143,5 +143,8 @@ return [
             'required' => 'Se requiere la mesa de pub.',
             'exists' => 'La mesa del pub no existe.',
         ],
+        'dateGame' => [
+            'required' => 'La fecha del juego es obligatoria.'
+        ]
     ],
 ];

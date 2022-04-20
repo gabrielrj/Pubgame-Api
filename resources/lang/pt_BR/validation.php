@@ -140,5 +140,8 @@ return [
             'required' => 'A mesa do pub é de escolha obrigatória.',
             'exists' => 'A mesa escolhida não foi implementada.',
         ],
+        'dateGame' => [
+            'required' => 'A data do jogo é obrigatória.'
+        ]
     ],
 ];

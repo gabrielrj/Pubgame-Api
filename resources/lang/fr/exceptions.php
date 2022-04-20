@@ -20,4 +20,5 @@ return [
     'UnexpectedErrorException' => 'Une erreur inattendue s\"est produite lors de la tentative d\"exécution de l\"opération.',
     'AvatarGameTimeLimitException' => 'Votre avatar est ivre et a la gueule de bois, il ne récupérera qu"après 24 heures de repos.',
     'AvatarMaxAccessoriesException' => 'Votre avatar a atteint le nombre maximum d"accessoires autorisés.',
+    'NoGameStartedException' => 'La dernière partie commencée par le joueur est déjà terminée.',
 ];

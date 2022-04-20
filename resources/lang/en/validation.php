@@ -154,6 +154,9 @@ return [
             'required' => 'The pub table is required.',
             'exists' => 'The pub table not exists.',
         ],
+        'dateGame' => [
+            'required' => 'Game date is mandatory.'
+        ]
     ],
 
     /*
