@@ -9,8 +9,6 @@ use App\Http\Resources\Api\Game\Games\History\GameHistoryResource;
 use App\Services\BaseGameManagamentService;
 use App\Services\Repositories\PlayerRepositoryInterface;
 use App\Services\Strategies\Games\GameManagementStrategy;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use JetBrains\PhpStorm\Pure;
 
 class BaseGameManagamentController extends Controller
 {

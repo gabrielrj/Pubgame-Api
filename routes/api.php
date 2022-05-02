@@ -20,6 +20,9 @@ Route::get('/isconnected', function () {
     return response()->json(['success' => true, 'isconnected' => true]);
 });
 
+Route::get('/get-encrypted-data', [\App\Http\Controllers\Api\Game\Player\PlayerController::class, 'getEncryptedData']);
+Route::post('/validate-encrypted-data', [\App\Http\Controllers\Api\Game\Player\PlayerController::class, 'validateEncryptedData']);
+
 
 /**
  * Authentication Group

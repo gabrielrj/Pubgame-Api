@@ -6,9 +6,6 @@ use App\Exceptions\Api\UnexpectedErrorException;
 use App\Http\Controllers\Api\Game\Traits\GameControllerCallableIntercept;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Game\BeerPoingGameRequest;
-use App\Http\Requests\Api\Game\HistoryGameRequest;
-use App\Http\Resources\Api\Game\Games\History\GameHistoryResource;
-use App\Services\GameManagementServiceInterface;
 use App\Services\Repositories\AvatarRepositoryInterface;
 use App\Services\Repositories\PlayerRepositoryInterface;
 use App\Services\Repositories\PubTableRepositoryInterface;
@@ -22,7 +19,7 @@ class BeerPoingController extends Controller
 {
     use GameControllerCallableIntercept;
 
-    protected GameManagementServiceInterface $gameManagementService;
+    protected mixed $gameManagementService;
     protected PlayerRepositoryInterface $playerRepository;
     protected AvatarRepositoryInterface $avatarRepository;
     protected PubTableRepositoryInterface $pubTableRepository;
@@ -61,6 +58,8 @@ class BeerPoingController extends Controller
         $this->actionName = 'end last game started';
 
         return $this->run(function () use ($request) {
+
+
             $rt = $request->get('rt');
 
             $totalNumberOfCorrectBalls = Str::substr($rt, -2);
