@@ -2,9 +2,9 @@
 
 namespace App\Exceptions\Api\Player\AuthAndAccess;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class UnauthorizedPlayerLoginException extends Exception
+class UnauthorizedPlayerLoginException extends CustomException
 {
     protected string $key = __CLASS__;
 

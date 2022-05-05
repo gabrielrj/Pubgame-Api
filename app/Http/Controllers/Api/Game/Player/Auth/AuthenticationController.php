@@ -6,6 +6,7 @@ use App\Exceptions\Api\FeatureNotImplementedException;
 use App\Exceptions\Api\Player\AuthAndAccess\UnauthorizedPlayerLoginException;
 use App\Http\Controllers\Api\Game\Traits\GameControllerCallableIntercept;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Game\PlayerLoginWithEmailAndPasswordRequest;
 use App\Services\Repositories\PlayerRepositoryInterface;
 use App\Services\Strategies\Authentication\AuthenticationStrategy;
 use App\Services\Strategies\Authentication\PlayerAuthenticationWithEmailAndPasswordStrategy;
@@ -33,7 +34,7 @@ class AuthenticationController extends Controller
         });
     }
 
-    public function loginWithEmailAndPassword(Request $request): \Illuminate\Http\JsonResponse
+    public function loginWithEmailAndPassword(PlayerLoginWithEmailAndPasswordRequest $request): \Illuminate\Http\JsonResponse
     {
         $this->actionName = 'login with email and password';
 
