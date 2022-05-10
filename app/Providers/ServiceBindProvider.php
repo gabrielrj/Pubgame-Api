@@ -8,6 +8,8 @@ use App\Services\AccessoryService;
 use App\Services\AccessoryServiceInterface;
 use App\Services\AvatarService;
 use App\Services\AvatarServiceInterface;
+use App\Services\DashboardServices\UserAuthentication;
+use App\Services\DashboardServices\UserAuthenticationInterface;
 use App\Services\ErrorTrappingService;
 use App\Services\ErrorTrappingServiceInterface;
 use App\Services\Repositories\AccessoryOfPlayerRepository;
@@ -90,6 +92,7 @@ class ServiceBindProvider extends ServiceProvider
         $this->app->bind(AccessoryRaffleByBoxServiceInterface::class, AccessoryRaffleByBoxService::class);
         $this->app->bind(AvatarServiceInterface::class, AvatarService::class);
         $this->app->bind(AccessoryServiceInterface::class, AccessoryService::class);
+        $this->app->bind(UserAuthenticationInterface::class, UserAuthentication::class);
 
     }
 }

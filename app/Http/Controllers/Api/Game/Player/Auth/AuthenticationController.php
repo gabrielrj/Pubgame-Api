@@ -51,7 +51,7 @@ class AuthenticationController extends Controller
             $player = $this->playerRepository->findById(auth('player')->id());
 
             return [
-                'accessToken' => $accessToken,
+                'token' => $accessToken,
                 'player' => $player,
             ];
 
