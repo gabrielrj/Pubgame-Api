@@ -6,7 +6,7 @@ use App\Services\Repositories\UserRepositoryInterface;
 use App\Services\Traits\ServiceCallableIntercept;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserAuthentication implements UserAuthenticationInterface
 {
@@ -31,10 +31,16 @@ class UserAuthentication implements UserAuthenticationInterface
 
             throw_if(!$user, new Exception('User not found!'));
 
-            if(!auth()->attempt(['email' => $payload['email'], 'password' => $payload['password']]))
-                throw new AuthenticationException();
+            $authenticated = Auth::attempt(['email' => $payload['email'], 'password' => $payload['password']], true);
 
-            return '';
+            if(!$authenticated)
+                abort(401);
+
+            \auth()->user()->tokens()->delete();
+
+            $token = \auth()->user()->createToken('dashboard_' . $user->id . '_auth_token');
+
+            return $token->plainTextToken;
 
             /*throw_unless(Hash::check($payload['password'], $user->password), new Exception('The provided credentials are incorrect.'));
 

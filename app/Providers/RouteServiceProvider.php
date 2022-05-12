@@ -46,6 +46,16 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            Route::prefix('api/game')
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/game.php'));
+
+            Route::prefix('api/dashboard')
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/dashboard.php'));
         });
     }
 
@@ -54,7 +64,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());

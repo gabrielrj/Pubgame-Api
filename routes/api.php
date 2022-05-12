@@ -58,15 +58,8 @@ Route::prefix('dashboard')->group(function () {
 });
 
 
-
-/**
- *
- * Logged routes by sanctum
- *
- */
-Route::middleware('auth:sanctum')
-    ->group(function () {
-        require base_path('routes/game.php');
-
-        require base_path('routes/dashboard.php');
+Route::middleware('auth:sanctum')->group(function() {
+    Route::get('dteste', function () {
+        return auth()->user();
     });
+});

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Apps\Dashboard\Auth;
 
-use App\Http\Controllers\Api\ApiResponseExceptionController;
 use App\Http\Controllers\Api\Apps\Traits\AppControllerCallableIntercept;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Dashboard\UserSignInRequest;
@@ -20,15 +19,22 @@ class AuthenticationController extends Controller
         $this->userAuthentication = $userAuthentication;
     }
 
-    public function login(UserSignInRequest $request)
+    public function login(UserSignInRequest $request): \Illuminate\Http\JsonResponse
     {
-        try {
-            $this->userAuthentication->login($request->only('email', 'password'));
-        }catch (\Exception $exception){
-            $errors = (new ApiResponseExceptionController())($exception, 'dashboard user login');
+        $this->actionName = 'dashboard user login';
 
-            return response()->json($errors, $errors['http_code'])->withHeaders($errors);
-        }
+        return $this->run(function () use($request){
+            return $this->userAuthentication->login($request->only('email', 'password'));
+        });
 
+    }
+
+    public function getUserLogged(): \Illuminate\Http\JsonResponse
+    {
+        $this->actionName = 'get dashboard user data';
+
+        return $this->run(function () {
+            return auth()->user();
+        });
     }
 }

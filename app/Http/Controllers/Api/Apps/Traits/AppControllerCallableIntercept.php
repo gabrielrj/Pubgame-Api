@@ -22,10 +22,7 @@ trait AppControllerCallableIntercept
 
             $response = $fn();
 
-            return response()->json([
-                'success' => true,
-                'json_data' => $response
-            ]);
+            return response()->json($response);
         }catch (\Exception $exception){
             $errors = (new ApiResponseExceptionController())($exception, $this->actionName);
 

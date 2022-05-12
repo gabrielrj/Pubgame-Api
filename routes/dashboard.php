@@ -2,8 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('dashboard')->group(function () {
-    Route::get('user', function () {
-        return auth()->user();
+Route::middleware('auth:sanctum')
+    ->group(function () {
+        Route::get('user', [\App\Http\Controllers\Api\Apps\Dashboard\Auth\AuthenticationController::class, 'getUserLogged']);
     });
-});
