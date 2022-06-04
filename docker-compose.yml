@@ -5,7 +5,7 @@ services:
     container_name: pubgame_api_app_laravel
     build:
       args:
-        user: root
+        user: gabriel
         uid: 1000
       context: ./
       dockerfile: Dockerfile
@@ -63,7 +63,7 @@ services:
   queue:
     build:
       args:
-        user: root
+        user: gabriel
         uid: 1000
       context: ./
       dockerfile: Dockerfile
