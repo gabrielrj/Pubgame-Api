@@ -31,6 +31,7 @@ RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
 
+COPY --chown=www:www-data . /var/www
 RUN chown -R www:www-data /var/www/storage
 RUN chmod -R ug+w /var/www/storage
 
