@@ -26,6 +26,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
             Route::get('/get/history', [\App\Http\Controllers\Api\Game\Player\Games\BaseGameManagamentController::class, 'getHistoryOfGames']);
         });
+
+        Route::prefix('avatars')->group(function () {
+            Route::get('/list', [\App\Http\Controllers\Api\Game\Player\AvatarController::class, 'getAllAvatarsFromPlayerLogged']);
+        });
+
+        Route::prefix('accessories')->group(function () {
+            Route::get('/list', [\App\Http\Controllers\Api\Game\Player\AccessoryOfPlayerController::class, 'getAllAccessoriesFromPlayerLogged']);
+        });
     });
 });
 
