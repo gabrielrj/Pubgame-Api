@@ -21,6 +21,7 @@ class Avatar extends ProductTransactionable
         'box_id',
         'color',
         'last_game_date',
+        'nft_hash'
     ];
 
     protected $hidden = [
@@ -38,7 +39,7 @@ class Avatar extends ProductTransactionable
         'updated_at'
     ];
 
-    protected $appends = ['level'];
+    protected $appends = ['level', 'is_nft'];
 
     //Relationships//
     public function player(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -53,6 +54,11 @@ class Avatar extends ProductTransactionable
 
 
     //Attributes//
+
+    public function getIsNftAttribute(): bool
+    {
+        return isset($this->nft_hash);
+    }
 
     /**
      * @throws Exception

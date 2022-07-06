@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Game\Player;
 
 use App\Http\Controllers\Api\Game\Traits\GameControllerCallableIntercept;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\Game\Player\Accessories\PlayerAccessoriesResource;
 use App\Services\Repositories\AccessoryOfPlayerRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -23,10 +24,12 @@ class AccessoryOfPlayerController extends Controller
         $this->actionName = 'get all accessories from player logged';
 
         return $this->run(function () {
-            return $this->accessoryOfPlayerRepository->newQuery()
+            $accessories = $this->accessoryOfPlayerRepository->newQuery()
                 ->with(['accessory', 'player', 'avatar'])
                 ->where('players_id', '=', auth()->id())
                 ->get();
+
+            return PlayerAccessoriesResource::collection($accessories);
         });
     }
 }

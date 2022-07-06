@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Game\Player;
 
 use App\Http\Controllers\Api\Game\Traits\GameControllerCallableIntercept;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\Game\Player\Avatars\PlayerAvatarsResource;
 use App\Services\Repositories\AvatarRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -23,10 +24,12 @@ class AvatarController extends Controller
         $this->actionName = 'get all avatars from player logged';
 
         return $this->run(function () {
-            return $this->avatarRepository->newQuery()
+            $avatares = $this->avatarRepository->newQuery()
                 ->with(['accessories.accessory', 'player'])
                 ->where('players_id', '=', auth()->id())
                 ->get();
+
+            return PlayerAvatarsResource::collection($avatares);
         });
     }
 }

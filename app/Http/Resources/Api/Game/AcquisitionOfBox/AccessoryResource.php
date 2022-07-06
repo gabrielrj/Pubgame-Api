@@ -24,8 +24,10 @@ class AccessoryResource extends JsonResource
             'name' => $this->accessory->name,
             'type' => $this->accessory->type->name,
             'rarity' => $this->accessory->rarity->name,
-            'skill' => $this->accessory->skill->code . '|' . $this->accessory->skill->name,
-            'modifier' => $this->accessory->modifier,
+            //Skill
+            'sk' => $this->accessory->skill->code . '|' . $this->accessory->skill->name,
+            //Modifier
+            'md' => $this->accessory->modifier,
             'edition' => $this->accessory->edition,
             'is_free' => $this->accessory->is_free,
         ];
