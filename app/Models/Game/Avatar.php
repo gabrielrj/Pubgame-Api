@@ -2,6 +2,7 @@
 
 namespace App\Models\Game;
 
+use App\Models\Game\Settings\CollectionPuberType;
 use App\Models\Traits\HasUuidKey;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +22,9 @@ class Avatar extends ProductTransactionable
         'box_id',
         'color',
         'last_game_date',
-        'nft_hash'
+        'nft_hash',
+        'collection_puber_types_id',
+        'url_image',
     ];
 
     protected $hidden = [
@@ -30,13 +33,17 @@ class Avatar extends ProductTransactionable
         'players_id',
         'created_at',
         'updated_at',
+        'deleted_at',
         'last_game_date',
+        'collection_puber_types_id',
+        'url_image',
     ];
 
     protected $dates = [
         'last_game_date',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'deleted_at',
     ];
 
     protected $appends = ['level', 'is_nft'];
@@ -50,6 +57,11 @@ class Avatar extends ProductTransactionable
     public function accessories(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(AccessoryOfPlayer::class, 'avatars_id');
+    }
+
+    public function puber_type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(CollectionPuberType::class, 'collection_puber_types_id');
     }
 
 

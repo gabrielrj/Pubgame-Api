@@ -25,7 +25,9 @@ class Accessory extends Model
         'skills_id',
         'modifier',
         'is_free',
-        'edition'
+        'edition',
+        'accessory_collections_id',
+        'collection_puber_types_id',
     ];
 
     protected $hidden = [
@@ -37,6 +39,9 @@ class Accessory extends Model
         'is_free',
         'created_at',
         'updated_at',
+        'deleted_at',
+        'accessory_collections_id',
+        'collection_puber_types_id',
     ];
 
     protected $casts = [
@@ -67,6 +72,16 @@ class Accessory extends Model
     public function type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(AccessoryType::class, 'type_id');
+    }
+
+    public function collection(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(AccessoryCollection::class, 'accessory_collections_id');
+    }
+
+    public function puber_type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(CollectionPuberType::class, 'collection_puber_types_id');
     }
 
     //Attributes
