@@ -24,6 +24,14 @@ class CreateCollectionPuberTypesTable extends Migration
 
             $table->string('description', 256)->nullable();
 
+            $table->integer('legendary_avatars_count')->nullable();
+
+            $table->integer('epic_avatars_count')->nullable();
+
+            $table->integer('rare_avatars_count')->nullable();
+
+            $table->integer('common_avatars_count')->nullable();
+
             $table->softDeletes();
 
             $table->timestamps();
