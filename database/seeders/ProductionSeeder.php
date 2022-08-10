@@ -7,6 +7,7 @@ use App\Models\Game\Settings\Accessory;
 use App\Models\Game\Settings\AccessoryCollection;
 use App\Models\Game\Settings\AccessoryRarityType;
 use App\Models\Game\Settings\AccessoryType;
+use App\Models\Game\Settings\AvatarRarityType;
 use App\Models\Game\Settings\CollectionPuberType;
 use App\Models\Game\Settings\GameType;
 use Exception;
@@ -26,6 +27,12 @@ class ProductionSeeder extends Seeder
         DB::beginTransaction();
 
         try {
+            $this->addAvatarRarities();
+
+            $this->addAccessoryCollections();
+
+            $this->addAccessoryCollectionPuberTypes();
+
             $this->addAccessoriesRarities();
 
             $this->addAccessoriesType();
@@ -35,6 +42,32 @@ class ProductionSeeder extends Seeder
             DB::rollBack();
 
             throw $exception;
+        }
+    }
+
+    private function addAvatarRarities(){
+        try {
+            $avatarRarities = [
+                ['name' => 'Common', 'description' => null],
+                ['name' => 'Rare', 'description' => null],
+                ['name' => 'Epic', 'description' => null],
+                ['name' => 'Legendary', 'description' => null],
+            ];
+
+            foreach ($avatarRarities as $rarity){
+                $rarity = (object)$rarity;
+
+                AvatarRarityType::query()
+                    ->firstOrCreate([
+                        'name' => $rarity->name
+                    ], [
+                        'name' => $rarity->name,
+                        'description' => $rarity->description
+                    ]);
+            }
+        }catch (\Exception $exception){
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
         }
     }
 

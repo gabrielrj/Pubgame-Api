@@ -15,8 +15,13 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        if(env('app_env') == 'production')
+        if(env('app_env') == 'production') {
             $this->call(ProductionSeeder::class);
+            $this->call(AccessoriesCollectionFoundersSeeder::class);
+            $this->call(LegendaryAvatarsCollectionFoundersSeeder::class);
+            $this->call(EpicAvatarsCollectionFoundersSeeder::class);
+            $this->call(RareAvatarsCollectionFoundersSeeder::class);
+        }
         else
             $this->call(TestSeeder::class);
     }

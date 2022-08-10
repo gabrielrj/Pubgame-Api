@@ -44,7 +44,7 @@ class AccessoryOfPlayer extends ProductTransactionable
         'is_pending_payment' => 'bool'
     ];
 
-    public function accessory(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function info(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Accessory::class, 'accessories_id');
     }

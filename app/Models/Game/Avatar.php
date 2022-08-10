@@ -2,6 +2,9 @@
 
 namespace App\Models\Game;
 
+use App\Exceptions\Api\Avatar\AccessoryDoesNotBelongToThePlayerException;
+use App\Exceptions\Api\Avatar\AccessoryIsAlreadyMountedOnAnotherAvatarException;
+use App\Exceptions\Api\Avatar\AccessoryLimitForMountingExceededException;
 use App\Models\Game\Settings\Accessory;
 use App\Models\Game\Settings\AvatarRarityType;
 use App\Models\Game\Settings\CollectionPuberType;
@@ -86,23 +89,73 @@ class Avatar extends ProductTransactionable
     /**
      * Sets the avatar's rarity level according to the quantity and rarity level of accessories..
      *
-     * @return bool
+     * @return void
      */
-    public function setRarity() : bool
+    public function setRarity() : void
     {
-        $accessories = $this->accessories()->with(['type', 'rarity', 'puber_type'])->get();
+        $allAccessories = $this->accessories()->with(['info.type', 'info.rarity', 'info.puber_type'])->get();
 
-        if($accessories->count() < 6) {
-            $this->avatar_rarity_types_id = AvatarRarityType::query()->whereName('Common')->find()->id;
-            return $this->save();
+        $commonAccessoriesCount = $allAccessories->where('info.type.name', '=', 'Common')->count();
+        $rareAccessoriesCount = $allAccessories->where('info.type.name', '=', 'Rare')->count();
+        $epicAccessoriesCount = $allAccessories->where('info.type.name', '=', 'Epic')->count();
+
+        if($allAccessories->count() === 6){
+            $isLegendary = false;
+            $oldAccessoryPuberType = null;
+
+            foreach ($allAccessories as $accessory){
+                if(!$oldAccessoryPuberType)
+                    $oldAccessoryPuberType = $accessory->info->puber_type->name;
+                elseif($oldAccessoryPuberType == $accessory->info->puber_type->name)
+                    $isLegendary = true;
+                else {
+                    $isLegendary = false;
+                    break;
+                }
+            }
+
+            if($isLegendary)
+                $this->rarity()->associate(AvatarRarityType::query()->whereName('Legendary')->first());
+            elseif($commonAccessoriesCount > 0 && $rareAccessoriesCount <= 3 && $epicAccessoriesCount <= 3)
+                $this->rarity()->associate(AvatarRarityType::query()->whereName('Common')->first());
+            elseif($rareAccessoriesCount > 3 || ($rareAccessoriesCount === 3 && $epicAccessoriesCount === 3))
+                $this->rarity()->associate(AvatarRarityType::query()->whereName('Rare')->first());
+            else
+                $this->rarity()->associate(AvatarRarityType::query()->whereName('Epic')->first());
         }else{
-            $accessoriesForPuberTypeCount = $accessories->countBy();
-
-            $commonAccessoriesCount = $accessories->where('type.name', '=', 'Common')->count();
-            $rareAccessoriesCount = $accessories->where('type.name', '=', 'Rare')->count();
-            $epicAccessoriesCount = $accessories->where('type.name', '=', 'Epic')->count();
-            $legendaryAccessoriesCount = $accessories->where('type.name', '=', 'Legendary')->count();
+            if($rareAccessoriesCount > 3)
+                $this->rarity()->associate(AvatarRarityType::query()->whereName('Rare')->first());
+            elseif($epicAccessoriesCount > 3)
+                $this->rarity()->associate(AvatarRarityType::query()->whereName('Epic')->first());
+            else
+                $this->rarity()->associate(AvatarRarityType::query()->whereName('Common')->first());
         }
 
+    }
+
+    /**
+     * @throws AccessoryLimitForMountingExceededException
+     * @throws AccessoryIsAlreadyMountedOnAnotherAvatarException
+     * @throws AccessoryDoesNotBelongToThePlayerException
+     */
+    public function dressAccessory(AccessoryOfPlayer $accessory) : bool
+    {
+        if($this->accessories()->count() >= 6)
+            throw new AccessoryLimitForMountingExceededException();
+
+        if($accessory->avatars_id !== null)
+            throw new AccessoryIsAlreadyMountedOnAnotherAvatarException();
+
+        if($this->players_id !== null && $accessory->players_id != $this->players_id)
+            throw new AccessoryDoesNotBelongToThePlayerException();
+
+        $accessory->avatars_id = $this->id;
+        $accessory->engagement_date_in_avatar = now();
+
+        $saved = $accessory->save();
+
+        $this->setRarity();
+
+        return $saved;
     }
 }
