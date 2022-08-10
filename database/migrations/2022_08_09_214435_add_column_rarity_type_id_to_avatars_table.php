@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnsCollectionPuberToAvatarsTable extends Migration
+class AddColumnRarityTypeIdToAvatarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +14,10 @@ class AddColumnsCollectionPuberToAvatarsTable extends Migration
     public function up()
     {
         Schema::table('avatars', function (Blueprint $table) {
-            $table->foreignId('collection_puber_types_id')
+            $table->foreignId('avatar_rarity_types_id')
                 ->nullable()
-                ->after('players_id')
-                ->constrained('collection_puber_types');
-
-            $table->string('url_image', 1024)
                 ->after('box_id')
-                ->nullable();
+                ->constrained('avatar_rarity_types');
         });
     }
 
@@ -33,9 +29,7 @@ class AddColumnsCollectionPuberToAvatarsTable extends Migration
     public function down()
     {
         Schema::table('avatars', function (Blueprint $table) {
-            $table->dropConstrainedForeignId('collection_puber_types_id');
-
-            $table->dropColumn('url_image');
+            $table->dropConstrainedForeignId('avatar_rarity_types_id');
         });
     }
 }

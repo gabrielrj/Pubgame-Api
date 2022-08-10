@@ -7,6 +7,7 @@ use App\EnumTypes\Coin\CoinTypes;
 use App\Models\Game\Settings\Accessory;
 use App\Models\Game\Settings\AccessoryRarityType;
 use App\Models\Game\Settings\AccessoryType;
+use App\Models\Game\Settings\AvatarRarityType;
 use App\Models\Game\Settings\BoxAccessoryType;
 use App\Models\Game\Settings\CoinType;
 use App\Models\Game\Settings\GameType;
@@ -21,13 +22,15 @@ class TestSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->addCoinTypes();
 
         $this->addPubTables();
 
         $this->addGameTypes();
+
+        $this->addAvatarRarities();
 
         $this->addAccessoriesRarities();
 
@@ -147,16 +150,42 @@ class TestSeeder extends Seeder
         }
     }
 
-    private function addAccessoriesRarities(){
+    private function addAvatarRarities(){
         try {
-            $rarities = [
+            $avatarRarities = [
                 ['name' => 'Common', 'description' => null],
                 ['name' => 'Rare', 'description' => null],
                 ['name' => 'Epic', 'description' => null],
                 ['name' => 'Legendary', 'description' => null],
             ];
 
-            foreach ($rarities as $rarity){
+            foreach ($avatarRarities as $rarity){
+                $rarity = (object)$rarity;
+
+                AvatarRarityType::query()
+                    ->firstOrCreate([
+                        'name' => $rarity->name
+                    ], [
+                        'name' => $rarity->name,
+                        'description' => $rarity->description
+                    ]);
+            }
+        }catch (\Exception $exception){
+            print_r(__FUNCTION__ . PHP_EOL);
+            print_r($exception->getMessage() . PHP_EOL);
+        }
+    }
+
+    private function addAccessoriesRarities(){
+        try {
+            $accessoryRarities = [
+                ['name' => 'Common', 'description' => null],
+                ['name' => 'Rare', 'description' => null],
+                ['name' => 'Epic', 'description' => null],
+                ['name' => 'Legendary', 'description' => null],
+            ];
+
+            foreach ($accessoryRarities as $rarity){
                 $rarity = (object)$rarity;
 
                 AccessoryRarityType::query()
