@@ -10,5 +10,5 @@ interface RegisterTransactionServiceInterface
 {
     function createNewTransaction(Player $player,
                                   array $payload = null,
-                                  ProductTransactionable ...$items) : Transaction;
+                                  ?ProductTransactionable ...$items) : Transaction;
 }

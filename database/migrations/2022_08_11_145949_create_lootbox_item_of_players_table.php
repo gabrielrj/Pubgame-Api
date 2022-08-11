@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterTableAddColumnNftHashToAvatarsTable extends Migration
+class CreateLootboxItemOfPlayersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AlterTableAddColumnNftHashToAvatarsTable extends Migration
      */
     public function up()
     {
-        Schema::table('avatars', function (Blueprint $table) {
-            $table->string('nft_hash', 256)
-                ->after('box_id')
-                ->nullable();
+        Schema::create('lootbox_item_of_players', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -27,8 +26,6 @@ class AlterTableAddColumnNftHashToAvatarsTable extends Migration
      */
     public function down()
     {
-        Schema::table('avatars', function (Blueprint $table) {
-            $table->dropColumn('nft_hash');
-        });
+        Schema::dropIfExists('lootbox_item_of_players');
     }
 }

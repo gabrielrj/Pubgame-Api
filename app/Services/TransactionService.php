@@ -23,6 +23,18 @@ abstract class TransactionService implements RegisterTransactionServiceInterface
     use ServiceCallableIntercept;
 
     /**
+     *
+     * Make a new transaction.
+     *
+     * @param Player $player
+     * @param string $operation
+     * @param string $type
+     * @param string $status
+     * @param float|null $amount
+     * @param int|null $coinTypeId
+     * @param string|null $blockchain_hash_transaction
+     * @param ProductTransactionable|null ...$productItems
+     * @return Transaction
      * @throws Exception
      */
     protected function registerNewTransactionToPlayer(Player                 $player,
@@ -32,7 +44,7 @@ abstract class TransactionService implements RegisterTransactionServiceInterface
                                                       float                  $amount = null,
                                                       int                    $coinTypeId = null,
                                                       string                 $blockchain_hash_transaction = null,
-                                                      ProductTransactionable ...$productItems) : Transaction
+                                                      ?ProductTransactionable ...$productItems) : Transaction
     {
         return $this->run(function () use($player, $amount, $coinTypeId, $operation, $type, $status, $blockchain_hash_transaction, $productItems){
             $currentFundsOfPlayer = $player->getFunds($coinTypeId);
