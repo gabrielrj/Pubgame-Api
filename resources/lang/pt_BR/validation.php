@@ -142,6 +142,12 @@ return [
         ],
         'dateGame' => [
             'required' => 'A data do jogo é obrigatória.'
-        ]
+        ],
+        'busdDepositAmount' => [
+            'required' => 'É obrigatório informar o valor de BUSD a ser depositado.',
+            'min' => 'O valor mínimo para depósito é 50 BUSD(s).',
+            'numeric' => 'Informações inválidas.',
+            'in' => 'As opções de depósito são (50, 100, 150, 200 e 250) BUSD(s).',
+        ],
     ],
 ];

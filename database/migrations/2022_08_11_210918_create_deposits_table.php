@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransactionsTable extends Migration
+class CreateDepositsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,28 +13,14 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('deposits', function (Blueprint $table) {
             $table->id();
 
             $table->uuid('uuid')->unique();
 
             $table->foreignId('players_id')->constrained('players');
 
-            $table->string('source_wallet', 256)
-                ->nullable()
-                ->index();
-
-            $table->string('destination_wallet', 256)
-                ->nullable()
-                ->index();
-
             $table->string('blockchain_hash_transaction', 256)
-                ->nullable();
-
-            $table->decimal('game_current_amount_of_coins', 16,9)
-                ->nullable();
-
-            $table->decimal('game_expected_amount_of_coins', 16,9)
                 ->nullable();
 
             $table->decimal('coin_amount', 16,9)
@@ -52,22 +38,17 @@ class CreateTransactionsTable extends Migration
                 ->nullable();
 
             /**
-             * App/EnumTypes/Transactions/TransactionType
-             */
-            $table->string('type', 50)->index();
-
-            /**
-             * App/EnumTypes/Transactions/TransactionStatus
+             * App/EnumTypes/Deposits/DepositStatus
              */
             $table->string('status', 50)
-                ->default(\App\EnumTypes\Transactions\TransactionStatus::Pending)
+                ->default(\App\EnumTypes\Deposits\DepositStatus::Pending)
                 ->index();
 
             /**
-             * App/EnumTypes/Transactions/TransactionOperation
+             * Last time verification was performed if the operation was already completed on the blockchain.
              */
-            $table->string('operation', 5)
-                ->index();
+            $table->dateTime('last_verified_operation')
+                ->nullable();
 
             $table->softDeletes();
 
@@ -82,6 +63,6 @@ class CreateTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('deposits');
     }
 }

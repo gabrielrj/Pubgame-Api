@@ -31,6 +31,7 @@ class Player extends Authenticatable
         'email',
         'password',
         'wallet_address',
+        'is_blocked',
     ];
 
     /**

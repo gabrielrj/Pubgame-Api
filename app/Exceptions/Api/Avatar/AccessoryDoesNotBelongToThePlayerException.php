@@ -2,9 +2,9 @@
 
 namespace App\Exceptions\Api\Avatar;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class AccessoryDoesNotBelongToThePlayerException extends Exception
+class AccessoryDoesNotBelongToThePlayerException extends CustomException
 {
     protected $code = 422;
 

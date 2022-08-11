@@ -156,7 +156,13 @@ return [
         ],
         'dateGame' => [
             'required' => 'Game date is mandatory.'
-        ]
+        ],
+        'busdDepositAmount' => [
+            'required' => 'It is mandatory to inform the amount of BUSD to be deposited.',
+            'min' => 'The minimum amount for deposit is 50 BUSD(s).',
+            'numeric' => 'Invalid information.',
+            'in' => 'Deposit options are (50, 100, 150, 200 and 250) BUSD(s).',
+        ],
     ],
 
     /*

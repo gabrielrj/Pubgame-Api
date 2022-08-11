@@ -2,9 +2,9 @@
 
 namespace App\Exceptions\Api\Game;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class NoGameStartedException extends Exception
+class NoGameStartedException extends CustomException
 {
     //
 }

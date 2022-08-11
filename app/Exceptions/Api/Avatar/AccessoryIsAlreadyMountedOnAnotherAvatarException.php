@@ -2,9 +2,9 @@
 
 namespace App\Exceptions\Api\Avatar;
 
-use Exception;
+use App\Exceptions\Api\CustomException;
 
-class AccessoryIsAlreadyMountedOnAnotherAvatarException extends Exception
+class AccessoryIsAlreadyMountedOnAnotherAvatarException extends CustomException
 {
     protected $code = 422;
 

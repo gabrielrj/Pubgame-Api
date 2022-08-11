@@ -28,11 +28,17 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         Route::prefix('avatars')->group(function () {
-            Route::get('/list', [\App\Http\Controllers\Api\Game\Player\AvatarController::class, 'getAllAvatarsFromPlayerLogged']);
+            Route::get('list', [\App\Http\Controllers\Api\Game\Player\AvatarController::class, 'getAllAvatarsFromPlayerLogged']);
         });
 
         Route::prefix('accessories')->group(function () {
-            Route::get('/list', [\App\Http\Controllers\Api\Game\Player\AccessoryOfPlayerController::class, 'getAllAccessoriesFromPlayerLogged']);
+            Route::get('list', [\App\Http\Controllers\Api\Game\Player\AccessoryOfPlayerController::class, 'getAllAccessoriesFromPlayerLogged']);
+        });
+
+        Route::prefix('finance')->group(function (){
+            Route::prefix('deposit')->group(function (){
+                Route::post('BUSD', [\App\Http\Controllers\Api\Game\Player\Deposits\BUSDDepositController::class, 'deposit']);
+            });
         });
     });
 });

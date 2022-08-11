@@ -15,6 +15,16 @@ class CreateLootboxItemOfPlayersTable extends Migration
     {
         Schema::create('lootbox_item_of_players', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('lootbox_items_id')
+                ->constrained('lootbox_items');
+
+            $table->foreignId('lootbox_of_players_id')
+                ->nullable()
+                ->constrained('lootbox_of_players');
+
+            $table->softDeletes();
+
             $table->timestamps();
         });
     }
