@@ -2,6 +2,7 @@
 
 namespace App\Models\Game\Finance;
 
+use App\EnumTypes\Withdraws\WithdrawStatus;
 use App\Models\Game\Settings\CoinType;
 use App\Models\Traits\HasUuidKey;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,6 +33,25 @@ class Withdrawal extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    protected $appends = [
+        'withdrawal_status'
+    ];
+
+    //Accessors & Mutators
+    public function getWithdrawalStatusAttribute() : string
+    {
+        return match ($this->status) {
+            WithdrawStatus::Pending => 'Pending',
+            WithdrawStatus::Scheduled => 'Scheduled',
+            WithdrawStatus::InProgress => 'In progress',
+            WithdrawStatus::Completed => 'Completed',
+            WithdrawStatus::Cancelled => 'Cancelled',
+            WithdrawStatus::Failed => 'Failed',
+            WithdrawStatus::TerminalFailed => 'Terminal failed',
+            default => 'Unexpected status',
+        };
+    }
 
     //Relationships//
     public function coin_type(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -16,6 +16,12 @@ Route::middleware('auth:sanctum')->group(function () {
                     //Route::post('external');
                 });
             });
+
+            Route::prefix('acquisition-of-lootbox')->group(function () {
+                Route::get('list/available');
+
+                Route::post('purchase');
+            });
         });
 
         Route::prefix('games')->group(function () {
@@ -35,9 +41,15 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('list', [\App\Http\Controllers\Api\Game\Player\AccessoryOfPlayerController::class, 'getAllAccessoriesFromPlayerLogged']);
         });
 
-        Route::prefix('finance')->group(function (){
+        Route::prefix('finances')->group(function (){
             Route::prefix('deposit')->group(function (){
                 Route::post('BUSD', [\App\Http\Controllers\Api\Game\Player\Deposits\BUSDDepositController::class, 'deposit']);
+            });
+
+            Route::prefix('history')->group(function () {
+                Route::prefix('deposits')->group(function () {
+                    Route::get('BUSD', [\App\Http\Controllers\Api\Game\Player\Deposits\BUSDDepositController::class, 'getAllDepositsForPlayer']);
+                });
             });
         });
     });
